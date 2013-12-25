@@ -1,0 +1,8 @@
+name: RPGPlus
+main: com.Github.Malatak1.RPGPlus.RPGPlus
+version: 0.1
+
+commands:
+  rpg:
+    description: rpgplus base command
+    usage: /<command>
