@@ -2,7 +2,7 @@ RPG+
 ====
 What is RPG+?
 -------------
-RPG+ is a plugin for the Swords of Valor Minecraft server (http://www.swordsofvalor.net/)
+RPG+ is a plugin for the *Swords of Valor* Minecraft server (http://www.swordsofvalor.net/)
 To do
 -----
   1. Create classes and attributes
