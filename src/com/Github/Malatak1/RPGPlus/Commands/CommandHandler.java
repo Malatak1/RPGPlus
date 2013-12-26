@@ -77,9 +77,8 @@ public class CommandHandler implements CommandExecutor {
 		Map<Player, FileConfiguration> mp = db.getFileMap();
 		mp.put(p, f);
 		db.setFileMap(mp);
-		
+
 	}
-	
 	
 	
 	
