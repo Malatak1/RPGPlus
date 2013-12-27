@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
-import com.Github.Malatak1.RPGPlus.SkillType;
+import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 
 public class ExperienceHandler {
 	

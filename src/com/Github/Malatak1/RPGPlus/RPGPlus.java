@@ -6,13 +6,19 @@ import java.io.InputStream;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.Github.Malatak1.RPGPlus.Commands.CommandHandler;
+import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenuHandler;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerJoinListener;
 
 public class RPGPlus extends JavaPlugin {
 	
-	private static RPGPlus instance;
+	//Global Variables
+	public static final IconMenuHandler iconMenuHandler = new IconMenuHandler();
+	public static final DataBaseManager dataBaseManager = new DataBaseManager(RPGPlus.inst());
+	
 	public static InputStream baseFile;
+	
+	private static RPGPlus instance;
 	
     @Override
     public void onEnable(){
@@ -35,6 +41,9 @@ public class RPGPlus extends JavaPlugin {
     	}
     	getDataFolder().mkdirs();
         new DataBaseManager(this).prepareDataBase();
+        
+        //Preparing IconMenus
+        iconMenuHandler.initIconMenus();
     }
  
     @Override
