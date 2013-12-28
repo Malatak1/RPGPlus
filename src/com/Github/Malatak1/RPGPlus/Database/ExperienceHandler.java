@@ -6,11 +6,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
+import com.Github.Malatak1.RPGPlus.DataTypes.LevelIncrements;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 
 public class ExperienceHandler {
 	
 	DataBaseManager db = new DataBaseManager(RPGPlus.inst());
+	
+	LevelIncrements increments;
+	FileConfiguration f;
 	
 	Player p;
 	SkillType type;
@@ -22,8 +26,10 @@ public class ExperienceHandler {
 		this.type = type;
 		this.value = value;
 		
+		increments = new LevelIncrements(type);
+		
 		Map<Player, FileConfiguration> mp = db.getFileMap();
-		FileConfiguration f = mp.get(p);
+		f = mp.get(p);
 		
 		switch (type) {
 			case STRENGTH: 
@@ -56,6 +62,29 @@ public class ExperienceHandler {
 	
 	private void handleExperience(Player p, SkillType type) {
 		
+		String skillName = null;
+		
+		switch (type) {
+			case STRENGTH: skillName = "Strength"; break;
+			case DEXTERITY: skillName = "Dexterity"; break;
+			case WISDOM: skillName = "Wisdom"; break;
+			case CONSTITUTION: skillName = "Constitution"; break;
+		}
+		
+		int exp = f.getInt("Exp." + skillName);
+		int level = f.getInt("Skills." + skillName);
+		
+		int increment = increments.getIncrement(level);
+		
+		if (exp > increment) {
+			
+			int overFlow = exp - increment;
+			
+			f.set("Skills." + skillName, level++);
+			f.set("Exp." + skillName, overFlow);
+			
+		}
+			
 	}
 	
 }
