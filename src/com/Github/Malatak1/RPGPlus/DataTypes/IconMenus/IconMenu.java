@@ -23,7 +23,7 @@ public class IconMenu implements Listener {
    
     private String[] optionNames;
     private ItemStack[] optionIcons;
-   
+    
     public IconMenu(String name, int size, OptionClickEventHandler handler, Plugin plugin) {
         this.name = name;
         this.size = size;
