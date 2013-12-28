@@ -23,15 +23,19 @@ public class LevelIncrements {
 	
 	private void generateValues() {
 		
+		/**
+		 * Geometric Sequence for generating level values at each given interval:
+		 * an = a1 * r^(n-1), where an is the value at an increment, a1 is the first
+		 * number, r is the common difference and n is the point at which the increment
+		 * falls in the sequence.
+		 */
+		
 		for (int i = 0; i < type.getMax(); i++) {
 			
-			increments[i] = 200 * (i - 1);
+			float a1 = 90;
+			float r = 0.1F;
 			
-			// This might be changed. Currently it would yield:
-			// 0, 200, 400, 800, 1600, 3200, 6400 etc.
-			
+			increments[i] = (int) Math.round(a1 * Math.pow(r, i - 1));
 		}
-		
 	}
-	
 }
