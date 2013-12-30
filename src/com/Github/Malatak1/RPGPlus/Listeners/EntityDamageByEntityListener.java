@@ -3,6 +3,7 @@ package com.Github.Malatak1.RPGPlus.Listeners;
 import java.util.Map;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,6 +44,32 @@ public class EntityDamageByEntityListener implements Listener {
 				
 			}
 		}
+		if (event.getDamager() instanceof Arrow) {
+			if (((Arrow) event.getDamager()).getShooter() instanceof Player) {
+				
+				Player damager = (Player) ((Arrow) event.getDamager()).getShooter();
+				if (damager.isOnline()) {
+					db = new DataBaseManager(RPGPlus.inst());
+					
+					Map<Player, FileConfiguration> mp = db.getFileMap();
+					f = mp.get(damager);
+					
+					int dexterity = f.getInt("Skills.Dexterity");
+					
+					double damage = event.getDamage();
+					
+					if (dexterity == 60) {
+						event.setDamage(damage + 3);
+					} else if (dexterity >= 40) {
+						event.setDamage(damage + 2);
+					} else if (dexterity >= 20) {
+						event.setDamage(damage + 1);
+					}
+					
+				}
+			}
+		}
+	
 	}
 	
 }
