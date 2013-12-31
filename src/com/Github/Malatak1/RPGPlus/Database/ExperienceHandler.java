@@ -2,6 +2,7 @@ package com.Github.Malatak1.RPGPlus.Database;
 
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -14,13 +15,12 @@ public class ExperienceHandler {
 	DataBaseManager db = new DataBaseManager(RPGPlus.inst());
 	
 	LevelIncrements increments;
-	FileConfiguration f;
 	
 	Player p;
 	SkillType type;
 	int value;
 	
-	public ExperienceHandler(Player p, SkillType type, int value) {
+	public void handleXp(Player p, SkillType type, int value) {
 		
 		this.p = p;
 		this.type = type;
@@ -29,10 +29,10 @@ public class ExperienceHandler {
 		increments = new LevelIncrements(type);
 		
 		Map<Player, FileConfiguration> mp = db.getFileMap();
-		f = mp.get(p);
+		FileConfiguration f = mp.get(p);
 		
 		switch (type) {
-			case STRENGTH: 
+		case STRENGTH: 
 			int str = f.getInt("Exp.Strength");
 			str += value;
 			f.set("Exp.Strength", str);
@@ -41,19 +41,19 @@ public class ExperienceHandler {
 		case DEXTERITY: 
 			int dex = f.getInt("Exp.Dexterity");
 			dex += value;
-			f.set("Skills.Dexterity", dex);
+			f.set("Exp.Dexterity", dex);
 			handleExperience(p, type);
 			break;
 		case WISDOM: 
 			int wis = f.getInt("Exp.Wisdom");
 			wis += value;
-			f.set("Skills.Wisdom", wis);
+			f.set("Exp.Wisdom", wis);
 			handleExperience(p, type);
 			break;
 		case CONSTITUTION: 
 			int con = f.getInt("Exp.Constitution");
 			con += value;
-			f.set("Skills.Constitution", con);
+			f.set("Exp.Constitution", con);
 			handleExperience(p, type);
 			break;
 		}
@@ -61,6 +61,9 @@ public class ExperienceHandler {
 	}
 	
 	private void handleExperience(Player p, SkillType type) {
+		
+		Map<Player, FileConfiguration> mp = db.getFileMap();
+		FileConfiguration f = mp.get(p);
 		
 		String skillName = null;
 		
@@ -76,15 +79,29 @@ public class ExperienceHandler {
 		
 		int increment = increments.getIncrement(level);
 		
-		if (exp > increment) {
+		if (exp >= increment) {
 			
 			int overFlow = exp - increment;
 			
-			f.set("Skills." + skillName, level++);
+
+			f.set("Skills." + skillName, level + 1);
 			f.set("Exp." + skillName, overFlow);
+			
+			p.sendMessage(ChatColor.YELLOW + "Your " + skillName + " level has increased to " + ChatColor.GREEN + (level + 1));
+			
+			finalizeData(p,f);
+			handleExperience(p,type);
 			
 		}
 			
+	}
+	
+	private void finalizeData(Player p, FileConfiguration f) {
+		
+		Map<Player, FileConfiguration> mp = db.getFileMap();
+		mp.put(p, f);
+		db.setFileMap(mp);
+
 	}
 	
 }

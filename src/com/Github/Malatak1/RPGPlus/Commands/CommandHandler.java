@@ -2,6 +2,7 @@ package com.Github.Malatak1.RPGPlus.Commands;
 
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,6 +10,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
+import com.Github.Malatak1.RPGPlus.DataTypes.LevelIncrements;
+import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
 
 public class CommandHandler implements CommandExecutor {
@@ -23,14 +26,21 @@ public class CommandHandler implements CommandExecutor {
 				Map<Player, FileConfiguration> mp = db.getFileMap();
 				FileConfiguration f = mp.get(p);
 				
-				String strength = "Strength: " + f.getInt("Skills.Strength");
-				String dexterity = "Dexterity: " + f.getInt("Skills.Dexterity");
-				String wisdom = "Wisdom: " + f.getInt("Skills.Wisdom");
-				String constitution = "Constitution: " + f.getInt("Skills.Constitution");
+				LevelIncrements strIncrements = new LevelIncrements(SkillType.STRENGTH);
+				LevelIncrements dexIncrements = new LevelIncrements(SkillType.DEXTERITY);
+				LevelIncrements wisIncrements = new LevelIncrements(SkillType.WISDOM);
+				LevelIncrements conIncrements = new LevelIncrements(SkillType.CONSTITUTION);
+				
+				
+				
+				String strength = ChatColor.YELLOW + "Strength: " + ChatColor.GREEN + f.getInt("Skills.Strength") + ChatColor.AQUA + " (" + ChatColor.GRAY + f.getInt("Exp.Strength") + ChatColor.AQUA + "/" + ChatColor.GRAY + strIncrements.getIncrement(f.getInt("Skills.Strength")) + ChatColor.AQUA + ")";
+				String dexterity = ChatColor.YELLOW + "Dexterity: " + ChatColor.GREEN + f.getInt("Skills.Dexterity") + ChatColor.AQUA + " (" + ChatColor.GRAY + f.getInt("Exp.Dexterity") + ChatColor.AQUA + "/" + ChatColor.GRAY + dexIncrements.getIncrement(f.getInt("Skills.Dexterity")) + ChatColor.AQUA + ")";
+				String wisdom = ChatColor.YELLOW + "Wisdom: " + ChatColor.GREEN + f.getInt("Skills.Wisdom") + ChatColor.AQUA + " (" + ChatColor.GRAY + f.getInt("Exp.Wisdom") + ChatColor.AQUA + "/" + ChatColor.GRAY + wisIncrements.getIncrement(f.getInt("Skills.Wisdom")) + ChatColor.AQUA + ")";
+				String constitution = ChatColor.YELLOW + "Constitution: " + ChatColor.GREEN + f.getInt("Skills.Constitution") + ChatColor.AQUA + " (" + ChatColor.GRAY + f.getInt("Exp.Constitution") + ChatColor.AQUA + "/" + ChatColor.GRAY + conIncrements.getIncrement(f.getInt("Skills.Constitution")) + ChatColor.AQUA + ")";
 				
 				if (args.length == 0) {
 					//Print stats
-					p.sendMessage("Stats:");
+					p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "---SKILL LEVELS:---");
 					p.sendMessage(strength);
 					p.sendMessage(dexterity);
 					p.sendMessage(wisdom);
@@ -39,32 +49,43 @@ public class CommandHandler implements CommandExecutor {
 					return true;
 				} else if (args.length == 1) {
 					String s = args[0];
-					switch(s) {
+					switch(s.toLowerCase()) {
 					
-					case "Strength": p.sendMessage(strength); break;
-					case "Dexterity": p.sendMessage(dexterity); break;
-					case "Wisdom": p.sendMessage(wisdom); break;
-					case "Constitution": p.sendMessage(constitution); break;
+					case "strength": p.sendMessage(strength); break;
+					case "dexterity": p.sendMessage(dexterity); break;
+					case "wisdom": p.sendMessage(wisdom); break;
+					case "constitution": p.sendMessage(constitution); break;
 					default: p.sendMessage("Error: " + args[1] + " is not an acceptable argument.");
 					
+					return true;
 					}
 				} else if (args.length == 2) {
-					int change = Integer.parseInt(args[1]);
-					String s = args[0];
-					switch (s) {
 					
-					case "Strength": f.set("Skills.Strength", change); p.sendMessage("Skill changed to: " + change); break;
-					case "Dexterity": f.set("Skills.Dexterity", change); p.sendMessage("Skill changed to: " + change); break;
-					case "Wisdom": f.set("Skills.Wisdom", change); p.sendMessage("Skill changed to: " + change); break;
-					case "Constitution": f.set("Skills.Constitution", change); p.sendMessage("Skill changed to: " + change); break;
-					default: p.sendMessage("Error: " + args[1] + " is not an acceptable argument.");
+					if (sender.isOp()) {
+						int change = Integer.parseInt(args[1]);
+						String s = args[0];
+						switch (s.toLowerCase()) {
+						
+						case "strength": f.set("Skills.Strength", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
+						case "dexterity": f.set("Skills.Dexterity", change); p.sendMessage("Skill changed to: " + change); break;
+						case "wisdom": f.set("Skills.Wisdom", change); p.sendMessage("Skill changed to: " + change); break;
+						case "constitution": f.set("Skills.Constitution", change); p.sendMessage("Skill changed to: " + change); break;
+						default: p.sendMessage("Error: " + args[0] + " is not an acceptable argument.");
+						
+						finalizeData(p, f);
+
+					}
 					
-					finalizeData(p, f);
+				} else {
+					sender.sendMessage("You lack the necessary permissions!");
 				}
-					} else {
-						sender.sendMessage("Only players can use this command");
-						return false;
-						}
+				
+					return true;
+					
+				} else {
+					sender.sendMessage("Only players can use this command");
+					return false;
+					}
 				
 				}
 			

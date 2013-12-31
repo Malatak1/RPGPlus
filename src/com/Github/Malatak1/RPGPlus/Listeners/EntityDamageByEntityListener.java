@@ -23,7 +23,6 @@ public class EntityDamageByEntityListener implements Listener {
 		if (event.getDamager() instanceof Player) {
 			if (((Player) event.getDamager()).isOnline()) {
 				
-				
 				Player damager = (Player) event.getDamager();
 				db = new DataBaseManager(RPGPlus.inst());
 				
@@ -41,7 +40,6 @@ public class EntityDamageByEntityListener implements Listener {
 				} else if (strength >= 20) {
 					event.setDamage(damage + 1);
 				}
-				
 			}
 		}
 		if (event.getDamager() instanceof Arrow) {

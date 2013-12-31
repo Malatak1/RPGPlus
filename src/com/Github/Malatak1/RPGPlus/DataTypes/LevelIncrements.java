@@ -23,6 +23,8 @@ public class LevelIncrements {
 	
 	private void generateValues() {
 		
+		increments = new int[type.getMax()];
+		
 		/**
 		 * Geometric Sequence for generating level values at each given interval:
 		 * an = a1 * r^(n-1), where an is the value at an increment, a1 is the first
