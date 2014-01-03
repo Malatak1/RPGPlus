@@ -15,6 +15,7 @@ import com.Github.Malatak1.RPGPlus.Listeners.EntityDamageListener;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDeathListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerInteractListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerJoinListener;
+import com.Github.Malatak1.RPGPlus.Listeners.PlayerLevelUpListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerQuitListener;
 
 public class RPGPlus extends JavaPlugin {
@@ -46,7 +47,7 @@ public class RPGPlus extends JavaPlugin {
     	pm.registerEvents(new EntityDamageListener(), this);
     	pm.registerEvents(new EntityDamageByEntityListener(), this);
     	pm.registerEvents(new EntityDeathListener(), this);
-    	
+    	pm.registerEvents(new PlayerLevelUpListener(), this);
     	//Setting up Database
     	saveDefaultConfig();
     	if (getDataFolder() == null) {

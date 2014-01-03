@@ -2,17 +2,20 @@ package com.Github.Malatak1.RPGPlus.Commands;
 
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.DataTypes.LevelIncrements;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Events.PlayerLevelUpEvent;
 
 public class CommandHandler implements CommandExecutor {
 	
@@ -47,8 +50,10 @@ public class CommandHandler implements CommandExecutor {
 					p.sendMessage(constitution);
 					
 					return true;
+					
 				} else if (args.length == 1) {
 					String s = args[0];
+					
 					switch(s.toLowerCase()) {
 					
 					case "strength": p.sendMessage(strength); break;
@@ -57,25 +62,41 @@ public class CommandHandler implements CommandExecutor {
 					case "constitution": p.sendMessage(constitution); break;
 					default: p.sendMessage("Error: " + args[1] + " is not an acceptable argument.");
 					
-					return true;
 					}
+					return true;
+					
 				} else if (args.length == 2) {
 					
 					if (sender.isOp() && Integer.parseInt(args[1]) <= 60) {
-						int change = Integer.parseInt(args[1]);
-						String s = args[0];
-						switch (s.toLowerCase()) {
 						
-						case "strength": f.set("Skills.Strength", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
-						case "dexterity": f.set("Skills.Dexterity", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
-						case "wisdom": f.set("Skills.Wisdom", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
-						case "constitution": f.set("Skills.Constitution", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
-						default: p.sendMessage("Error: " + args[0] + " is not an acceptable argument.");
+						int change = Integer.parseInt(args[1]);
+						String s = capitalize(args[0]);
+						
+						f.set("Skills." + s, change);
+						p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change);
+						
+						boolean acceptableArgument = false;
+						
+						for (SkillType type : SkillType.values()) {
+							if (s.equalsIgnoreCase(type.toString())) {
+								
+								p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change);
+								
+								Event event = new PlayerLevelUpEvent(p, type, change);
+								Bukkit.getServer().getPluginManager().callEvent(event);
+								
+								acceptableArgument = true;
+							}
+						}
+						
+						if (acceptableArgument == false) {
+							p.sendMessage("Error: " + args[0] + " is not an acceptable argument.");
+						}
 						
 						finalizeData(p, f);
-
-					}
-					
+						
+						return true;
+						
 				} else {
 					sender.sendMessage("Invalid Arguments! (or you may lack permissions)");
 				}
@@ -101,6 +122,10 @@ public class CommandHandler implements CommandExecutor {
 
 	}
 	
-	
+	private String capitalize(String s) {
+		char[] charArray = s.toLowerCase().toCharArray();
+		charArray[0] = Character.toUpperCase(charArray[0]);
+		return new String(charArray);
+	}
 	
 }

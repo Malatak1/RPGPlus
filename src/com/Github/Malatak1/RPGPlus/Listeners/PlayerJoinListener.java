@@ -37,8 +37,9 @@ public final class PlayerJoinListener implements Listener {
 		
 		
 		/**
-		 * Temporary code for testing
+		 * Temporary code - may change
 		 */
+		
 		FileConfiguration f = mp.get(p);
 		
 		int level = f.getInt("Skills.Constitution");

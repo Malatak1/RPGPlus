@@ -2,13 +2,16 @@ package com.Github.Malatak1.RPGPlus.Database;
 
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.DataTypes.LevelIncrements;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
+import com.Github.Malatak1.RPGPlus.Events.PlayerLevelUpEvent;
 
 public class ExperienceHandler {
 	
@@ -87,28 +90,10 @@ public class ExperienceHandler {
 				f.set("Skills." + skillName, level + 1);
 				f.set("Exp." + skillName, overFlow);
 				
-				/**
-				 * This is a very temporary piece of code - soon we will create 
-				 * a PlayerLevelUpEvent event that we ourselves can listen to,
-				 * and act on. This will be thrown here in the future.
-				 * 
-				 * For now however, this is just to set the player's max health.
-				 */
+				p.sendMessage(ChatColor.YELLOW + "Your " + ChatColor.GREEN + skillName + " level has increased to " + ChatColor.GREEN + (level + 1));
 				
-				if (type.equals(SkillType.CONSTITUTION)) {
-					
-					if (level + 1 % 3 == 0) {
-						
-						double increase = ((level + 1) / 3) - level % 3;
-						
-						p.setHealthScale(20D + increase);
-						p.setHealthScaled(true);
-						p.setMaxHealth(20D + increase);
-					}
-					
-				}
-				
-				p.sendMessage(ChatColor.YELLOW + "Your " + skillName + " level has increased to " + ChatColor.GREEN + (level + 1));
+				Event event = new PlayerLevelUpEvent(p, type, level + 1);
+				Bukkit.getServer().getPluginManager().callEvent(event);
 				
 				finalizeData(p,f);
 				handleExperience(p,type);

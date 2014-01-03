@@ -22,47 +22,29 @@ public class EntityDeathListener implements Listener{
 			
 			Player p = entity.getKiller();
 			
-			if (entity.getLastDamageCause().getCause().equals(DamageCause.PROJECTILE)) {
+			if (p.isOnline()) {
 				
-				int xp = 1;
-				if (entity instanceof Monster) {
-					xp = 4;
+				if (entity.getLastDamageCause().getCause().equals(DamageCause.PROJECTILE)) {
+					
+					int xp = 1;
+					if (entity instanceof Monster) {
+						xp = 6;
+					}
+					
+					RPGPlus.experienceHandler.handleXp(p, SkillType.DEXTERITY, xp);
+					
+				} else if (entity.getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
+					
+					int xp = 1;
+					if (entity instanceof Monster) {
+						xp = 6;
+					}
+					
+					RPGPlus.experienceHandler.handleXp(p, SkillType.STRENGTH, xp);
+					
 				}
-				
-				RPGPlus.experienceHandler.handleXp(p, SkillType.DEXTERITY, xp);
-				
-			} else if (entity.getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
-				
-				int xp = 1;
-				if (entity instanceof Monster) {
-					xp = 4;
-				}
-				
-				RPGPlus.experienceHandler.handleXp(p, SkillType.STRENGTH, xp);
 				
 			}
-			
 		}
-		
-//		if (event.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
-//			
-//			Bukkit.getLogger().info("Stage 1");
-//			
-//			EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
-//			
-//			if (damageEvent.getDamager() instanceof Arrow) {
-//				Bukkit.getLogger().info("Stage 2");
-//				if (((Arrow) damageEvent.getDamager()).getShooter() instanceof Player) {
-//					Bukkit.getLogger().info("Stage 3");
-//					Player p = (Player) ((Arrow) damageEvent.getDamager()).getShooter();
-//					
-//					RPGPlus.experienceHandler.handleXp(p, SkillType.DEXTERITY, 10);
-//					
-//				}
-//			}
-//			
-//		}
-		
 	}
-	
 }
