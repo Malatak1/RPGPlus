@@ -17,6 +17,10 @@ public class LevelIncrements {
 	
 	public int getIncrement(int i) {
 		
+		if (i == 60) {
+			return 200_000;
+		}
+		
 		return increments[i];
 		
 	}

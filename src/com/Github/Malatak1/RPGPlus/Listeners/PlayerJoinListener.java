@@ -34,6 +34,20 @@ public final class PlayerJoinListener implements Listener {
 			e.printStackTrace();
 		}
 		db.setFileMap(mp);
+		
+		
+		/**
+		 * Temporary code for testing
+		 */
+		FileConfiguration f = mp.get(p);
+		
+		int level = f.getInt("Skills.Constitution");
+		double increase = (level / 3) - level % 3;
+			
+		p.setHealthScale(20D + increase);
+		p.setHealthScaled(true);
+		p.setMaxHealth(20D + increase);
+		
 	}
 	
 }

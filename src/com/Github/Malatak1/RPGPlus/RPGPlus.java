@@ -11,6 +11,7 @@ import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenuHandler;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
 import com.Github.Malatak1.RPGPlus.Database.ExperienceHandler;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDamageByEntityListener;
+import com.Github.Malatak1.RPGPlus.Listeners.EntityDamageListener;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDeathListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerInteractListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerJoinListener;
@@ -42,6 +43,7 @@ public class RPGPlus extends JavaPlugin {
     	pm.registerEvents(new PlayerJoinListener(), this);
     	pm.registerEvents(new PlayerQuitListener(), this);
     	pm.registerEvents(new PlayerInteractListener(), this);
+    	pm.registerEvents(new EntityDamageListener(), this);
     	pm.registerEvents(new EntityDamageByEntityListener(), this);
     	pm.registerEvents(new EntityDeathListener(), this);
     	

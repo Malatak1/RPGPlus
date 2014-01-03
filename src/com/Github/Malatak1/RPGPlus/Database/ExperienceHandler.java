@@ -83,14 +83,36 @@ public class ExperienceHandler {
 			
 			int overFlow = exp - increment;
 			
-
-			f.set("Skills." + skillName, level + 1);
-			f.set("Exp." + skillName, overFlow);
-			
-			p.sendMessage(ChatColor.YELLOW + "Your " + skillName + " level has increased to " + ChatColor.GREEN + (level + 1));
-			
-			finalizeData(p,f);
-			handleExperience(p,type);
+			if (level + 1 <= 60) {
+				f.set("Skills." + skillName, level + 1);
+				f.set("Exp." + skillName, overFlow);
+				
+				/**
+				 * This is a very temporary piece of code - soon we will create 
+				 * a PlayerLevelUpEvent event that we ourselves can listen to,
+				 * and act on. This will be thrown here in the future.
+				 * 
+				 * For now however, this is just to set the player's max health.
+				 */
+				
+				if (type.equals(SkillType.CONSTITUTION)) {
+					
+					if (level + 1 % 3 == 0) {
+						
+						double increase = ((level + 1) / 3) - level % 3;
+						
+						p.setHealthScale(20D + increase);
+						p.setHealthScaled(true);
+						p.setMaxHealth(20D + increase);
+					}
+					
+				}
+				
+				p.sendMessage(ChatColor.YELLOW + "Your " + skillName + " level has increased to " + ChatColor.GREEN + (level + 1));
+				
+				finalizeData(p,f);
+				handleExperience(p,type);
+			}
 			
 		}
 			

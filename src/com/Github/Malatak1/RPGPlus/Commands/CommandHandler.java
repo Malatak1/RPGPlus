@@ -61,15 +61,15 @@ public class CommandHandler implements CommandExecutor {
 					}
 				} else if (args.length == 2) {
 					
-					if (sender.isOp()) {
+					if (sender.isOp() && Integer.parseInt(args[1]) <= 60) {
 						int change = Integer.parseInt(args[1]);
 						String s = args[0];
 						switch (s.toLowerCase()) {
 						
 						case "strength": f.set("Skills.Strength", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
-						case "dexterity": f.set("Skills.Dexterity", change); p.sendMessage("Skill changed to: " + change); break;
-						case "wisdom": f.set("Skills.Wisdom", change); p.sendMessage("Skill changed to: " + change); break;
-						case "constitution": f.set("Skills.Constitution", change); p.sendMessage("Skill changed to: " + change); break;
+						case "dexterity": f.set("Skills.Dexterity", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
+						case "wisdom": f.set("Skills.Wisdom", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
+						case "constitution": f.set("Skills.Constitution", change); p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change); break;
 						default: p.sendMessage("Error: " + args[0] + " is not an acceptable argument.");
 						
 						finalizeData(p, f);
@@ -77,7 +77,7 @@ public class CommandHandler implements CommandExecutor {
 					}
 					
 				} else {
-					sender.sendMessage("You lack the necessary permissions!");
+					sender.sendMessage("Invalid Arguments! (or you may lack permissions)");
 				}
 				
 					return true;
