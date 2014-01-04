@@ -44,7 +44,7 @@ public final class PlayerJoinListener implements Listener {
 		
 		int level = f.getInt("Skills.Constitution");
 		double increase = (level / 3) - level % 3;
-			
+		
 		p.setHealthScale(20D + increase);
 		p.setHealthScaled(true);
 		p.setMaxHealth(20D + increase);

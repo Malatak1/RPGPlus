@@ -34,7 +34,7 @@ public class EntityDamageListener implements Listener {
 					mod = 2;
 				}
 				
-				if (event.getCause().equals(DamageCause.FIRE) || event.getCause().equals(DamageCause.LAVA)) {
+				if (event.getCause().equals(DamageCause.LAVA)) {
 					giveXp = false;
 				}
 				

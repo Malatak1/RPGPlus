@@ -13,6 +13,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+
+import com.Github.Malatak1.RPGPlus.Abilities.Ability;
  
 public class IconMenu implements Listener {
  
@@ -137,5 +139,10 @@ public class IconMenu implements Listener {
         item.setItemMeta(im);
         return item;
     }
-   
+    
+	public void addAbility(int position, Ability ability) {
+		
+		setOption(position, ability.getIcon(), ability.getName(), ability.getInfo());
+		
+	}
 }
