@@ -91,15 +91,26 @@ public class DataBaseManager {
 	}
 	
 	public YamlConfiguration getPlayerStats(Player p) throws FileNotFoundException, IOException, InvalidConfigurationException {
-		File[] files = fileDataBase.listFiles();
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].getName().equals(p.getName().toLowerCase() + ".yml")) {
-				YamlConfiguration playerStats = new YamlConfiguration();
-				playerStats.load(files[i]);
-				return playerStats;
-			}
-		}
-		return null;
+		
+		File f = getPlayerFile(p);
+		
+		YamlConfiguration playerStats = new YamlConfiguration();
+		playerStats.load(f);
+		return playerStats;
+		
+		/**
+		 * Old method - will remove if new way is unsuccessful
+		 */
+		
+//		File[] files = fileDataBase.listFiles();
+//		for (int i = 0; i < files.length; i++) {
+//			if (files[i].getName().equals(p.getName().toLowerCase() + ".yml")) {
+//				YamlConfiguration playerStats = new YamlConfiguration();
+//				playerStats.load(files[i]);
+//				return playerStats;
+//			}
+//		}
+		
 	}
 	
 	public File getPlayerFile(Player p) {
