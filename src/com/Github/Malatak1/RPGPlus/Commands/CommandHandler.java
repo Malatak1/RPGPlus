@@ -72,15 +72,15 @@ public class CommandHandler implements CommandExecutor {
 						int change = Integer.parseInt(args[1]);
 						String s = capitalize(args[0]);
 						
-						f.set("Skills." + s, change);
-						p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change);
-						
 						boolean acceptableArgument = false;
 						
 						for (SkillType type : SkillType.values()) {
 							if (s.equalsIgnoreCase(type.toString())) {
 								
 								p.sendMessage(ChatColor.YELLOW + "Skill changed to: " + ChatColor.GREEN + change);
+								
+								f.set("Skills." + s, change);
+								f.set("Exp." + s, 0);
 								
 								Event event = new PlayerLevelUpEvent(p, type, change);
 								Bukkit.getServer().getPluginManager().callEvent(event);

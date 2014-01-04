@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
@@ -26,13 +27,18 @@ public class EntityDamageListener implements Listener {
 				double health = ((Damageable) p).getHealth();
 				double maxHealth = ((Damageable) p).getMaxHealth();
 				
+				boolean giveXp = true;
 				int mod = 3;
 				
 				if (event instanceof EntityDamageByEntityEvent) {
-					mod = 1;
+					mod = 2;
 				}
 				
-				if (health < maxHealth * 0.75 && damage > mod) {
+				if (event.getCause().equals(DamageCause.FIRE) || event.getCause().equals(DamageCause.LAVA)) {
+					giveXp = false;
+				}
+				
+				if (giveXp && health < maxHealth * 0.75 && damage > mod && damage < health) {
 					
 					double xp = damage / 2;
 					RPGPlus.experienceHandler.handleXp(p, SkillType.CONSTITUTION, (int) xp);

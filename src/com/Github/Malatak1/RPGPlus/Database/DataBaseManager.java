@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
+import com.Github.Malatak1.RPGPlus.Util.FileSaver;
 import com.Github.Malatak1.RPGPlus.Util.StreamHandler;
 
 /**
@@ -128,8 +129,8 @@ public class DataBaseManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		new StreamHandler(RPGPlus.getBaseFile(), file);
-		
+		StreamHandler runnable = new StreamHandler(RPGPlus.getBaseFile(), file);
+		new Thread(runnable).start();
 	}
 	
 	public void savePlayerFiles(Map<Player, FileConfiguration> mp) throws InvalidConfigurationException {
@@ -146,15 +147,10 @@ public class DataBaseManager {
 	    }
 	}
 	
-	public void savePlayer(Player p) {
+	public void savePlayer(Player p) throws FileNotFoundException, IOException, InvalidConfigurationException {
 		
-		FileConfiguration f = playerFileConfigMap.get(p);
-		try {
-			f.save(getPlayerFile(p));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		FileSaver fileSaver = new FileSaver(getPlayerStats(p), p);
+		new Thread(fileSaver).start();
 		playerFileConfigMap.remove(p);
 		
 	}

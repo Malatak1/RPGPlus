@@ -5,9 +5,18 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public final class StreamHandler {
+public final class StreamHandler implements Runnable {
+	
+	InputStream in;
+	File file;
 	
 	public StreamHandler(InputStream in, File file) {
+		this.in = in;
+		this.file = file;
+	}
+
+	@Override
+	public void run() {
 	    try {
 	        OutputStream out = new FileOutputStream(file);
 	        byte[] buf = new byte[1024];
