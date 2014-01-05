@@ -3,6 +3,7 @@ package com.Github.Malatak1.RPGPlus.DataTypes.IconMenus;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,6 +26,9 @@ public class IconMenu implements Listener {
    
     private String[] optionNames;
     private ItemStack[] optionIcons;
+    
+	ChatColor pri = IconMenuHandler.pri;
+	ChatColor sec = IconMenuHandler.sec;
     
     public IconMenu(String name, int size, OptionClickEventHandler handler, Plugin plugin) {
         this.name = name;
@@ -142,7 +146,7 @@ public class IconMenu implements Listener {
     
 	public void addAbility(int position, Ability ability) {
 		
-		setOption(position, ability.getIcon(), ability.getName(), ability.getInfo());
+		setOption(position, ability.getIcon(), pri + ability.getName(), sec + ability.getInfo());
 		
 	}
 }

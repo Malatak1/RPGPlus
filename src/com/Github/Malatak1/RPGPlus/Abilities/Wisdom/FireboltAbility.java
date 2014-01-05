@@ -1,36 +1,39 @@
 package com.Github.Malatak1.RPGPlus.Abilities.Wisdom;
 
+
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Fireball;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import com.Github.Malatak1.RPGPlus.Abilities.ActiveAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 
-public class FireballAbility implements ActiveAbility {
+public class FireboltAbility implements ActiveAbility {
 
 	@Override
 	public String getName() {
-		return "Fireball";
+		return "Firebolt";
 	}
 
 	@Override
 	public String getInfo() {
-		return "A powerful ball of fire";
+		return "A mid ranged flaming bolt";
 	}
 
 	@Override
 	public ItemStack getIcon() {
-		return new ItemStack(Material.FIREBALL);
+		return new ItemStack(Material.BLAZE_ROD);
 	}
 
 	@Override
 	public AbilityType getAbilityType() {
-		return AbilityType.MEDIUM;
+		return AbilityType.LIGHT;
 	}
 
 	@Override
@@ -46,15 +49,19 @@ public class FireballAbility implements ActiveAbility {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void cast(Player p, int power) {
-		Location loc = (Location) p.getEyeLocation().toVector().add(p.getLocation().getDirection().multiply(2)).toLocation(p.getWorld(), p.getLocation().getYaw(), p.getLocation().getPitch());
-		Fireball fireball = p.getWorld().spawn(loc, Fireball.class);
-		fireball.setYield(power + 2);
+        Vector direction = p.getEyeLocation().getDirection().multiply(1.5);
+        Projectile projectile = p.getWorld().spawn(p.getEyeLocation().add(direction.getX(), direction.getY(), direction.getZ()), Arrow.class);
+        projectile.setShooter(p);
+        projectile.setVelocity(direction.multiply(0.75 + (0.5 * power)));
+        projectile.setFireTicks(1200);
         
-		fireball.setShooter(p);
+		projectile.setShooter(p);
 		
+        Location loc = p.getLocation();
+        
         p.playEffect(loc, Effect.SMOKE, 5);
         p.playEffect(loc, Effect.MOBSPAWNER_FLAMES, 5);
         p.playEffect(loc, Effect.BLAZE_SHOOT, 1);
 	}
-
+	
 }

@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
+import com.Github.Malatak1.RPGPlus.Abilities.ActiveAbility;
+import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
+import com.Github.Malatak1.RPGPlus.Util.FileSaver;
 import com.Github.Malatak1.RPGPlus.Util.StreamHandler;
 
 /**
@@ -28,6 +31,7 @@ public class DataBaseManager {
 	RPGPlus rpgPlus = new RPGPlus();
 	static File fileDataBase;
 	public static Map<Player, FileConfiguration> playerFileConfigMap;
+	public static Map<Player,HashMap<AbilityType, ActiveAbility>> playerAbilityMap;
 	
 	Plugin plugin;
 	
@@ -74,7 +78,7 @@ public class DataBaseManager {
 		path.append(folderName + File.separator);
 		fileDataBase = new File(path.toString());
 		playerFileConfigMap = new HashMap<Player, FileConfiguration>();
-		
+		playerAbilityMap = new HashMap<Player, HashMap<AbilityType, ActiveAbility>>();
 	}
 	
 	public void closeDataBase() {
@@ -96,19 +100,6 @@ public class DataBaseManager {
 		YamlConfiguration playerStats = new YamlConfiguration();
 		playerStats.load(f);
 		return playerStats;
-		
-		/**
-		 * Old method - will remove if new way is unsuccessful
-		 */
-		
-//		File[] files = fileDataBase.listFiles();
-//		for (int i = 0; i < files.length; i++) {
-//			if (files[i].getName().equals(p.getName().toLowerCase() + ".yml")) {
-//				YamlConfiguration playerStats = new YamlConfiguration();
-//				playerStats.load(files[i]);
-//				return playerStats;
-//			}
-//		}
 		
 	}
 	
@@ -161,11 +152,8 @@ public class DataBaseManager {
 		
 		FileConfiguration f = playerFileConfigMap.get(p);
 		
-		try {
-			f.save(getPlayerFile(p));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileSaver fileSaver = new FileSaver(f, p);
+		new Thread(fileSaver).start();
 		
 		playerFileConfigMap.remove(p);
 		
@@ -179,4 +167,21 @@ public class DataBaseManager {
 		playerFileConfigMap = mp;
 	}
 	
+	public Map<AbilityType, ActiveAbility> getAbilityMap(Player p) {
+		
+		if(!playerAbilityMap.containsKey(p)) {
+			playerAbilityMap.put(p, new HashMap<AbilityType,ActiveAbility>());
+		}
+		return playerAbilityMap.get(p);
+		
+	}
+	
+	public void setAbility(Player p, ActiveAbility ability) {
+		
+		Map<AbilityType , ActiveAbility> playerMap = getAbilityMap(p);
+		playerMap.put(ability.getAbilityType(), ability);
+		
+		playerAbilityMap.put(p, (HashMap<AbilityType, ActiveAbility>) playerMap);
+		
+	}
 }

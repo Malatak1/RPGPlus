@@ -32,7 +32,7 @@ public class SkillTreeIconMenus {
 				
 				switch (event.getPosition()) {
 				
-				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
+				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!"); break;
 				
 				}
 			}
@@ -48,7 +48,7 @@ public class SkillTreeIconMenus {
 				
 				switch (event.getPosition()) {
 				
-				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
+				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!"); break;
 				
 				}
 			}
@@ -64,7 +64,7 @@ public class SkillTreeIconMenus {
 				
 				switch (event.getPosition()) {
 				
-				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
+				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!"); break;
 				
 				}
 			}

@@ -12,19 +12,16 @@ public class IconMenuHandler{
 	
 	private static IconMenu baseIconMenu;
 	private SkillTreeIconMenus stMenus;
+	private AbilitySelectMenus asMenus;
 	
-	private ChatColor pri;
-	private ChatColor sec;
-	private ChatColor ter;
+	public static ChatColor pri = ChatColor.AQUA;
+	public static ChatColor sec = ChatColor.GREEN;
+	public static final ChatColor ter = ChatColor.YELLOW;;
 	
 	public void initIconMenus(){
 		
 		stMenus = new SkillTreeIconMenus();
-		
-		pri = ChatColor.AQUA;
-		sec = ChatColor.GREEN;
-		ter = ChatColor.YELLOW;
-		
+		asMenus = new AbilitySelectMenus();
 		//TODO Here we will have to generate all iconmenus we will have
 		
 		baseIconMenu = new IconMenu("Character Customization", 9, new IconMenu.OptionClickEventHandler() {
@@ -33,10 +30,13 @@ public class IconMenuHandler{
 			public void onOptionClick(OptionClickEvent event) {
 				Player p = event.getPlayer();
 				
+				event.setWillClose(false);
+				
 				switch (event.getPosition()) {
 				case 1: stMenus.getStrengthMenu().open(p); break;
 				case 2: stMenus.getDexterityMenu().open(p); break;
 				case 3: stMenus.getWisdomMenu().open(p); break;
+				case 4: asMenus.createAbilityMenu().open(p); break;
 				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
 				
 				}
@@ -47,8 +47,10 @@ public class IconMenuHandler{
 		baseIconMenu.setOption(1, new ItemStack(Material.IRON_SWORD), pri + "Strength", sec + "Click to open " + ter + "strength" + sec + " skilltrees");
 		baseIconMenu.setOption(2, new ItemStack(Material.BOW), pri + "Dexterity",sec + "Click to open " + ter + "dexterity" + sec + " skilltrees");
 		baseIconMenu.setOption(3, new ItemStack(Material.BOOK), pri + "Wisdom", sec + "Click to open " + ter + "wisdom" + sec + " skilltrees");
-
+		baseIconMenu.setOption(4, new ItemStack(Material.EMERALD), pri + "Abilities", sec + "Choose the " + ter + "abilities" + sec + " you want selected");
 		
+		
+		stMenus.init();
 	}
 	
 	public IconMenu getBaseIconMenu(){
