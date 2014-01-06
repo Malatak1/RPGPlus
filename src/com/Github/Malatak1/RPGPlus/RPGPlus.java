@@ -3,8 +3,10 @@ package com.Github.Malatak1.RPGPlus;
 import java.io.File;
 import java.io.InputStream;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.Github.Malatak1.RPGPlus.Commands.CommandHandler;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenuHandler;
@@ -59,6 +61,11 @@ public class RPGPlus extends JavaPlugin {
         
         //Preparing IconMenus
         iconMenuHandler.initIconMenus();
+        
+        //Start repeating tasks
+        @SuppressWarnings("unused")
+		BukkitTask task = new ManaRegenerator().runTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ManaRegenerator(), 50, 20);
     }
  
     @Override

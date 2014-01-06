@@ -9,7 +9,7 @@ public interface ActiveAbility extends Ability {
 	
 	public AbilityType getAbilityType();
 	public SkillType getSkillType();
-	public int level();
+	public int manaCost();
 	
 	public void cast(Player p, int power);
 	

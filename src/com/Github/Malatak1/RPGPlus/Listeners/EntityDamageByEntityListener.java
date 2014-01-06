@@ -21,7 +21,7 @@ public class EntityDamageByEntityListener implements Listener {
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.getDamager() instanceof Player) {
-			if (((Player) event.getDamager()).isOnline()) {
+			if (!event.getDamager().hasMetadata("NPC")) {
 				
 				Player damager = (Player) event.getDamager();
 				db = new DataBaseManager(RPGPlus.inst());
@@ -46,7 +46,7 @@ public class EntityDamageByEntityListener implements Listener {
 			if (((Arrow) event.getDamager()).getShooter() instanceof Player) {
 				
 				Player damager = (Player) ((Arrow) event.getDamager()).getShooter();
-				if (damager.isOnline()) {
+				if (!damager.hasMetadata("NPC")) {
 					db = new DataBaseManager(RPGPlus.inst());
 					
 					Map<Player, FileConfiguration> mp = db.getFileMap();

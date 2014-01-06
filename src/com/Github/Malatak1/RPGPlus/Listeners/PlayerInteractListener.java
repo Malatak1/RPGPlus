@@ -44,27 +44,42 @@ public class PlayerInteractListener implements Listener {
 			
 			if (!p.isSneaking()) {
 				if (!rightClicked(event)) {
-					if (hasAbilitySelected(p,AbilityType.LIGHT,SkillType.WISDOM)) {
-						playerMap.get(AbilityType.LIGHT).cast(p, power);
+					if (hasAbilitySelected(p, AbilityType.LIGHT,SkillType.WISDOM)) {
+						ActiveAbility ability = playerMap.get(AbilityType.LIGHT);
+						if (ability.manaCost() < p.getLevel()) {
+							ability.cast(p, power);
+							p.setLevel(p.getLevel() - ability.manaCost());
+						}
 					}
 				} else {
-					if (hasAbilitySelected(p,AbilityType.MEDIUM,SkillType.WISDOM)) {
-						playerMap.get(AbilityType.MEDIUM).cast(p, power);
+					if (hasAbilitySelected(p, AbilityType.MEDIUM,SkillType.WISDOM)) {
+						ActiveAbility ability = playerMap.get(AbilityType.MEDIUM);
+						if (ability.manaCost() < p.getLevel()) {
+							ability.cast(p, power);
+							p.setLevel(p.getLevel() - ability.manaCost());
+						}
 					}
 				}
 			} else {
 				if (!rightClicked(event)) {
-					if (hasAbilitySelected(p,AbilityType.HEAVY,SkillType.WISDOM)) {
-						playerMap.get(AbilityType.HEAVY).cast(p, power);
+					if (hasAbilitySelected(p, AbilityType.HEAVY,SkillType.WISDOM)) {
+						ActiveAbility ability = playerMap.get(AbilityType.HEAVY);
+						if (ability.manaCost() < p.getLevel()) {
+							ability.cast(p, power);
+							p.setLevel(p.getLevel() - ability.manaCost());
+						}
 					}
 				} else {
-					if (hasAbilitySelected(p,AbilityType.ULTIMATE,SkillType.WISDOM)) {
-						playerMap.get(AbilityType.ULTIMATE).cast(p, power);
+					if (hasAbilitySelected(p, AbilityType.ULTIMATE,SkillType.WISDOM)) {
+						ActiveAbility ability = playerMap.get(AbilityType.ULTIMATE);
+						if (ability.manaCost() < p.getLevel()) {
+							ability.cast(p, power);
+							p.setLevel(p.getLevel() - ability.manaCost());
+						}
 					}
 				}
 			}
 		}
-		
 	}
 	
 	

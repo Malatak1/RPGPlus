@@ -90,7 +90,7 @@ public class ExperienceHandler {
 				f.set("Skills." + skillName, level + 1);
 				f.set("Exp." + skillName, overFlow);
 				
-				p.sendMessage(ChatColor.YELLOW + "Your " + ChatColor.GREEN + skillName + " level has increased to " + ChatColor.GREEN + (level + 1));
+				p.sendMessage(ChatColor.YELLOW + "Your " + ChatColor.GREEN + skillName + ChatColor.YELLOW + " level has increased to " + ChatColor.GREEN + (level + 1));
 				
 				Event event = new PlayerLevelUpEvent(p, type, level + 1);
 				Bukkit.getServer().getPluginManager().callEvent(event);
