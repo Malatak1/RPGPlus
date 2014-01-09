@@ -1,5 +1,6 @@
 package com.Github.Malatak1.RPGPlus.Listeners;
 
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -23,16 +24,17 @@ public class EntityDeathListener implements Listener{
 			Player p = entity.getKiller();
 			
 			if (!p.hasMetadata("NPC")) {
-				
+								
 				if (entity.getLastDamageCause().getCause().equals(DamageCause.PROJECTILE)) {
 					
 					int xp = 1;
 					if (entity instanceof Monster) {
 						xp = 5;
 					}
-					
-					RPGPlus.experienceHandler.handleXp(p, SkillType.DEXTERITY, xp);
-					
+					if (!p.getItemInHand().getType().equals(Material.STICK)) {
+						RPGPlus.experienceHandler.handleXp(p, SkillType.DEXTERITY, xp);
+					}
+
 				} else if (entity.getLastDamageCause().getCause().equals(DamageCause.ENTITY_ATTACK)) {
 					
 					int xp = 1;
@@ -41,15 +43,6 @@ public class EntityDeathListener implements Listener{
 					}
 					
 					RPGPlus.experienceHandler.handleXp(p, SkillType.STRENGTH, xp);
-					
-				} else if (entity.getLastDamageCause().getCause().equals(DamageCause.MAGIC)) {
-					
-					int xp = 1;
-					if (entity instanceof Monster) {
-						xp = 5;
-					}
-					
-					RPGPlus.experienceHandler.handleXp(p, SkillType.WISDOM, xp);
 					
 				}
 			}

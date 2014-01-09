@@ -10,12 +10,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
-import com.Github.Malatak1.RPGPlus.Abilities.ActiveAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Util.FireworkEffectPlayer;
 
-public class WaterBlastAbility implements ActiveAbility {
+public class WaterBlastAbility implements CastableAbility {
 
 	@Override
 	public String getName() {

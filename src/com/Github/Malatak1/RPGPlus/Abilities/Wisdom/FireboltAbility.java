@@ -14,13 +14,13 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
-import com.Github.Malatak1.RPGPlus.Abilities.ActiveAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Util.ProjectileEffect;
 import com.Github.Malatak1.RPGPlus.Util.ProjectileRemover;
 
-public class FireboltAbility implements ActiveAbility {
+public class FireboltAbility implements CastableAbility {
 
 	@Override
 	public String getName() {

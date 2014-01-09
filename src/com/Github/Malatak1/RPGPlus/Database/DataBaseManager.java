@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
-import com.Github.Malatak1.RPGPlus.Abilities.ActiveAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.Ability;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.Util.FileSaver;
 import com.Github.Malatak1.RPGPlus.Util.StreamHandler;
@@ -31,7 +31,7 @@ public class DataBaseManager {
 	RPGPlus rpgPlus = new RPGPlus();
 	static File fileDataBase;
 	public static Map<Player, FileConfiguration> playerFileConfigMap;
-	public static Map<Player,HashMap<AbilityType, ActiveAbility>> playerAbilityMap;
+	public static Map<Player,HashMap<AbilityType, Ability>> playerAbilityMap;
 	
 	Plugin plugin;
 	
@@ -78,7 +78,7 @@ public class DataBaseManager {
 		path.append(folderName + File.separator);
 		fileDataBase = new File(path.toString());
 		playerFileConfigMap = new HashMap<Player, FileConfiguration>();
-		playerAbilityMap = new HashMap<Player, HashMap<AbilityType, ActiveAbility>>();
+		playerAbilityMap = new HashMap<Player, HashMap<AbilityType, Ability>>();
 	}
 	
 	public void closeDataBase() {
@@ -130,8 +130,7 @@ public class DataBaseManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		StreamHandler runnable = new StreamHandler(RPGPlus.getBaseFile(), file);
-		new Thread(runnable).start();
+		new StreamHandler(RPGPlus.getBaseFile(), file).run();
 	}
 	
 	public void savePlayerFiles(Map<Player, FileConfiguration> mp) throws InvalidConfigurationException {
@@ -167,21 +166,21 @@ public class DataBaseManager {
 		playerFileConfigMap = mp;
 	}
 	
-	public Map<AbilityType, ActiveAbility> getAbilityMap(Player p) {
+	public Map<AbilityType, Ability> getAbilityMap(Player p) {
 		
 		if(!playerAbilityMap.containsKey(p)) {
-			playerAbilityMap.put(p, new HashMap<AbilityType,ActiveAbility>());
+			playerAbilityMap.put(p, new HashMap<AbilityType, Ability>());
 		}
 		return playerAbilityMap.get(p);
 		
 	}
 	
-	public void setAbility(Player p, ActiveAbility ability) {
+	public void setAbility(Player p, Ability ability) {
 		
-		Map<AbilityType , ActiveAbility> playerMap = getAbilityMap(p);
+		Map<AbilityType , Ability> playerMap = getAbilityMap(p);
 		playerMap.put(ability.getAbilityType(), ability);
 		
-		playerAbilityMap.put(p, (HashMap<AbilityType, ActiveAbility>) playerMap);
+		playerAbilityMap.put(p, (HashMap<AbilityType, Ability>) playerMap);
 		
 	}
 }

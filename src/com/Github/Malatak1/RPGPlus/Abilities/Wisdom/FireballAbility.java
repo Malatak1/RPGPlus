@@ -12,13 +12,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
-import com.Github.Malatak1.RPGPlus.Abilities.ActiveAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Util.ProjectileEffect;
 import com.Github.Malatak1.RPGPlus.Util.ProjectileRemover;
 
-public class FireballAbility implements ActiveAbility {
+public class FireballAbility implements CastableAbility {
 
 	@Override
 	public String getName() {

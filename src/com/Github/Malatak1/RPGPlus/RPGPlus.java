@@ -15,6 +15,7 @@ import com.Github.Malatak1.RPGPlus.Database.ExperienceHandler;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDamageByEntityListener;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDamageListener;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDeathListener;
+import com.Github.Malatak1.RPGPlus.Listeners.EntityShootBowListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerInteractListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerJoinListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerLevelUpListener;
@@ -49,6 +50,7 @@ public class RPGPlus extends JavaPlugin {
     	pm.registerEvents(new EntityDamageListener(), this);
     	pm.registerEvents(new EntityDamageByEntityListener(), this);
     	pm.registerEvents(new EntityDeathListener(), this);
+    	pm.registerEvents(new EntityShootBowListener(), this);
     	pm.registerEvents(new PlayerLevelUpListener(), this);
     	//Setting up Database
     	saveDefaultConfig();
@@ -66,10 +68,12 @@ public class RPGPlus extends JavaPlugin {
         @SuppressWarnings("unused")
 		BukkitTask task = new ManaRegenerator().runTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ManaRegenerator(), 50, 20);
+        
     }
  
     @Override
     public void onDisable() {
+    	saveConfig();
     	new DataBaseManager(this).closeDataBase();
         instance = null;
     }

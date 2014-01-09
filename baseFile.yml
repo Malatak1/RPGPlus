@@ -8,3 +8,17 @@ Exp:
   Dexterity: 0 
   Wisdom: 0
   Constitution: 0
+SkillPoints:
+  Strength: 0
+  Dexterity: 0 
+  Wisdom: 0
+  Constitution: 0
+Abilities:
+  Strength:
+    Axe_Swing: 1
+  Dexterity:
+    Agility: 1
+  Wisdom:
+    Firebolt: 1
+   
+  

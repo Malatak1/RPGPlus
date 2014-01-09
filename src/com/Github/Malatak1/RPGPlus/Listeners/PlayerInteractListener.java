@@ -11,7 +11,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
-import com.Github.Malatak1.RPGPlus.Abilities.ActiveAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.Ability;
+import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenuHandler;
@@ -35,7 +36,7 @@ public class PlayerInteractListener implements Listener {
 		
 		if (p.getItemInHand().getType().equals(Material.STICK)) {
 			
-			Map<AbilityType, ActiveAbility> playerMap = db.getAbilityMap(p);
+			Map<AbilityType, Ability> playerMap = db.getAbilityMap(p);
 			int power = 1;
 			if (p.getItemInHand().containsEnchantment(Enchantment.ARROW_DAMAGE)) {
 				power = p.getItemInHand().getEnchantmentLevel(Enchantment.ARROW_DAMAGE);
@@ -45,17 +46,17 @@ public class PlayerInteractListener implements Listener {
 			if (!p.isSneaking()) {
 				if (!rightClicked(event)) {
 					if (hasAbilitySelected(p, AbilityType.LIGHT,SkillType.WISDOM)) {
-						ActiveAbility ability = playerMap.get(AbilityType.LIGHT);
-						if (ability.manaCost() < p.getLevel()) {
-							ability.cast(p, power);
+						Ability ability = playerMap.get(AbilityType.LIGHT);
+						if (ability.manaCost() < p.getLevel() && ability instanceof CastableAbility) {
+							((CastableAbility) ability).cast(p, power);
 							p.setLevel(p.getLevel() - ability.manaCost());
 						}
 					}
 				} else {
 					if (hasAbilitySelected(p, AbilityType.MEDIUM,SkillType.WISDOM)) {
-						ActiveAbility ability = playerMap.get(AbilityType.MEDIUM);
-						if (ability.manaCost() < p.getLevel()) {
-							ability.cast(p, power);
+						Ability ability = playerMap.get(AbilityType.MEDIUM);
+						if (ability.manaCost() < p.getLevel() && ability instanceof CastableAbility) {
+							((CastableAbility) ability).cast(p, power);
 							p.setLevel(p.getLevel() - ability.manaCost());
 						}
 					}
@@ -63,17 +64,17 @@ public class PlayerInteractListener implements Listener {
 			} else {
 				if (!rightClicked(event)) {
 					if (hasAbilitySelected(p, AbilityType.HEAVY,SkillType.WISDOM)) {
-						ActiveAbility ability = playerMap.get(AbilityType.HEAVY);
-						if (ability.manaCost() < p.getLevel()) {
-							ability.cast(p, power);
+						Ability ability = playerMap.get(AbilityType.HEAVY);
+						if (ability.manaCost() < p.getLevel() && ability instanceof CastableAbility) {
+							((CastableAbility) ability).cast(p, power);
 							p.setLevel(p.getLevel() - ability.manaCost());
 						}
 					}
 				} else {
 					if (hasAbilitySelected(p, AbilityType.ULTIMATE,SkillType.WISDOM)) {
-						ActiveAbility ability = playerMap.get(AbilityType.ULTIMATE);
-						if (ability.manaCost() < p.getLevel()) {
-							ability.cast(p, power);
+						Ability ability = playerMap.get(AbilityType.ULTIMATE);
+						if (ability.manaCost() < p.getLevel() && ability instanceof CastableAbility) {
+							((CastableAbility) ability).cast(p, power);
 							p.setLevel(p.getLevel() - ability.manaCost());
 						}
 					}
@@ -92,9 +93,9 @@ public class PlayerInteractListener implements Listener {
 	
 	private boolean hasAbilitySelected(Player p, AbilityType type, SkillType skill) {
 		
-		Map<AbilityType, ActiveAbility> playerMap = db.getAbilityMap(p);
+		Map<AbilityType, Ability> playerMap = db.getAbilityMap(p);
 		if(playerMap.containsKey(type)) {
-			ActiveAbility ability = playerMap.get(type);
+			Ability ability = playerMap.get(type);
 			if (ability.getSkillType().equals(SkillType.WISDOM)) {
 				return true;
 			}

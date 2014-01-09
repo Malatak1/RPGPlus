@@ -16,13 +16,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
-import com.Github.Malatak1.RPGPlus.Abilities.ActiveAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Util.BlockRemover;
 import com.Github.Malatak1.RPGPlus.Util.FireworkEffectPlayer;
 
-public class FreezingWindsAbility implements ActiveAbility {
+public class FreezingWindsAbility implements CastableAbility {
 	
 	private ArrayList<Block> blocks;
 	

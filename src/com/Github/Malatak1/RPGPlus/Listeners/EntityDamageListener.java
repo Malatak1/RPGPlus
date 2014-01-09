@@ -16,12 +16,12 @@ public class EntityDamageListener implements Listener {
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
 		
-		if (event.getEntity() instanceof Player && event.getEntity() instanceof Damageable && event.getEntity().hasMetadata("NPC")) {
+		if (event.getEntity() instanceof Player && event.getEntity() instanceof Damageable) {
 			
 			Player p = (Player) event.getEntity();
 			
 			//Check to assert that the player is not just an npc
-			if (p.isOnline()) {
+			if (!p.hasMetadata("NPC")) {
 				
 				double damage = event.getDamage();
 				double health = ((Damageable) p).getHealth();
@@ -46,9 +46,6 @@ public class EntityDamageListener implements Listener {
 				}
 				
 			}
-			
-		}
-		
+		} 
 	}
-	
 }

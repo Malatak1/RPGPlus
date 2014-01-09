@@ -40,7 +40,7 @@ public class SkillTreeIconMenus {
 		
 		strengthIconMenu.setOption(0, new ItemStack(Material.PAPER), pri + "Info", sec + "Use the menus to customize your character");
 		
-		dexterityIconMenu = new IconMenu("Strength Skilltrees", 27, new IconMenu.OptionClickEventHandler() {
+		dexterityIconMenu = new IconMenu("Dexterity Skilltrees", 27, new IconMenu.OptionClickEventHandler() {
 			
 			@Override
 			public void onOptionClick(OptionClickEvent event) {
@@ -56,7 +56,7 @@ public class SkillTreeIconMenus {
 		
 		dexterityIconMenu.setOption(0, new ItemStack(Material.PAPER), pri + "Info", sec + "Use the menus to customize your character");
 		
-		wisdomIconMenu = new IconMenu("Strength Skilltrees", 27, new IconMenu.OptionClickEventHandler() {
+		wisdomIconMenu = new IconMenu("Wisdom Skilltrees", 27, new IconMenu.OptionClickEventHandler() {
 			
 			@Override
 			public void onOptionClick(OptionClickEvent event) {
