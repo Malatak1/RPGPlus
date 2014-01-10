@@ -45,6 +45,16 @@ public class WeakenAbility implements TargetableAbility {
 	}
 
 	@Override
+	public int staminaCost() {
+		return 0;
+	}
+
+	@Override
+	public int cooldownTime() {
+		return 0;
+	}
+	
+	@Override
 	public void onTarget(LivingEntity target, Player damager, int power) {
 		target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 40 + (20 * power), 0, true), true);
 		damager.playEffect(target.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);

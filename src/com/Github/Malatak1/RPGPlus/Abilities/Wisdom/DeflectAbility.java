@@ -46,7 +46,17 @@ public class DeflectAbility implements CastableAbility {
 	public int manaCost() {
 		return 4;
 	}
+	
+	@Override
+	public int staminaCost() {
+		return 0;
+	}
 
+	@Override
+	public int cooldownTime() {
+		return 0;
+	}
+	
 	@Override
 	public void cast(Player p, int power) {
 		@SuppressWarnings("deprecation")

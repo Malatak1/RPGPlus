@@ -44,13 +44,23 @@ public class VolleyAbility implements ProjectileAbility {
 	public int manaCost() {
 		return 0;
 	}
+	
+
+	@Override
+	public int staminaCost() {
+		return 0;
+	}
+
+	@Override
+	public int cooldownTime() {
+		return 0;
+	}
 
 	@Override
 	public void onShoot(Projectile projectile, int power) {
 		@SuppressWarnings("unused")
 		BukkitTask volleyRunnable = new VolleyArrowRunnable((Player) projectile.getShooter(), (Arrow) projectile, power).runTaskLater(RPGPlus.inst(), 5);
+		
 	}
-	
-	
 	
 }

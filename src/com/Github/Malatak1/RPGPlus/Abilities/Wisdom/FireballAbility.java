@@ -49,7 +49,17 @@ public class FireballAbility implements CastableAbility {
 	public int manaCost() {
 		return 10;
 	}
+	
+	@Override
+	public int staminaCost() {
+		return 0;
+	}
 
+	@Override
+	public int cooldownTime() {
+		return 0;
+	}
+	
 	@SuppressWarnings({ "deprecation", "unused" })
 	@Override
 	public void cast(Player p, int power) {
