@@ -88,7 +88,7 @@ public class EntityDamageByEntityListener implements Listener {
 			}
 		}
 		
-		if (event.getDamager() instanceof Fireball) {
+		if (event.getDamager() instanceof Fireball && event.getEntity() instanceof Monster) {
 			Fireball fireball = (Fireball) event.getDamager();
 			if (fireball.getShooter() instanceof Player) {
 				Player damager = (Player) fireball.getShooter();

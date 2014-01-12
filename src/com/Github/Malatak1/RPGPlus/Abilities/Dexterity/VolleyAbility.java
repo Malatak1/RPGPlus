@@ -8,12 +8,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
+import com.Github.Malatak1.RPGPlus.Abilities.CooldownAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.ProjectileAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.StaminaAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Util.VolleyArrowRunnable;
 
-public class VolleyAbility implements ProjectileAbility {
+public class VolleyAbility implements ProjectileAbility, StaminaAbility, CooldownAbility {
 
 	@Override
 	public String getName() {
@@ -41,19 +43,13 @@ public class VolleyAbility implements ProjectileAbility {
 	}
 
 	@Override
-	public int manaCost() {
-		return 0;
-	}
-	
-
-	@Override
 	public int staminaCost() {
 		return 0;
 	}
 
 	@Override
 	public int cooldownTime() {
-		return 0;
+		return 400;
 	}
 
 	@Override

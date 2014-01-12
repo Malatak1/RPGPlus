@@ -13,8 +13,5 @@ public interface Ability {
 	
 	public AbilityType getAbilityType();
 	public SkillType getSkillType();
-	public int manaCost();
-	public int staminaCost();
-	public int cooldownTime();
 	
 }

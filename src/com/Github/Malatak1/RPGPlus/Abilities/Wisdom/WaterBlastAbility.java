@@ -11,11 +11,13 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.CooldownAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.ManaAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Util.FireworkEffectPlayer;
 
-public class WaterBlastAbility implements CastableAbility {
+public class WaterBlastAbility implements CastableAbility, ManaAbility, CooldownAbility {
 
 	@Override
 	public String getName() {
@@ -45,11 +47,6 @@ public class WaterBlastAbility implements CastableAbility {
 	@Override
 	public int manaCost() {
 		return 10;
-	}
-	
-	@Override
-	public int staminaCost() {
-		return 0;
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class VolleyArrowRunnable extends BukkitRunnable {
 		spawnLoc.setY(spawnLoc.getY() + 20);
 		
 		final Vector direction = new Vector();
-		direction.setY(-2);
+		direction.setY(-1);
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(RPGPlus.inst(), new Runnable() {
 			public void run() {

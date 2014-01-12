@@ -10,10 +10,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.ManaAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 
-public class DeflectAbility implements CastableAbility {
+public class DeflectAbility implements CastableAbility, ManaAbility {
 	
 	HashSet<Byte> transparent; 
 	
@@ -45,16 +46,6 @@ public class DeflectAbility implements CastableAbility {
 	@Override
 	public int manaCost() {
 		return 4;
-	}
-	
-	@Override
-	public int staminaCost() {
-		return 0;
-	}
-
-	@Override
-	public int cooldownTime() {
-		return 0;
 	}
 	
 	@Override

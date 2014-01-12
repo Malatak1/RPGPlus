@@ -17,12 +17,14 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.CooldownAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.ManaAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Util.BlockRemover;
 import com.Github.Malatak1.RPGPlus.Util.FireworkEffectPlayer;
 
-public class FreezingWindsAbility implements CastableAbility {
+public class FreezingWindsAbility implements CastableAbility, ManaAbility, CooldownAbility {
 	
 	private ArrayList<Block> blocks;
 	
@@ -55,15 +57,10 @@ public class FreezingWindsAbility implements CastableAbility {
 	public int manaCost() {
 		return 30;
 	}
-	
-	@Override
-	public int staminaCost() {
-		return 0;
-	}
 
 	@Override
 	public int cooldownTime() {
-		return 0;
+		return 400;
 	}
 
 	@Override

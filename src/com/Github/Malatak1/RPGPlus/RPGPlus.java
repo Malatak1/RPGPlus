@@ -10,6 +10,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.Github.Malatak1.RPGPlus.Commands.CommandHandler;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenuHandler;
+import com.Github.Malatak1.RPGPlus.Database.CooldownManager;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
 import com.Github.Malatak1.RPGPlus.Database.ExperienceHandler;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDamageByEntityListener;
@@ -27,6 +28,7 @@ public class RPGPlus extends JavaPlugin {
 	public static final IconMenuHandler iconMenuHandler = new IconMenuHandler();
 	public static final DataBaseManager dataBaseManager = new DataBaseManager(RPGPlus.inst());
 	public static final ExperienceHandler experienceHandler = new ExperienceHandler();
+	public static final CooldownManager cooldownManager = new CooldownManager();
 	
 	public static InputStream baseFile;
 	

@@ -8,11 +8,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.Github.Malatak1.RPGPlus.Abilities.StaminaAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.TargetableAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 
-public class WeakenAbility implements TargetableAbility {
+public class WeakenAbility implements TargetableAbility, StaminaAbility {
 
 	@Override
 	public String getName() {
@@ -40,18 +41,8 @@ public class WeakenAbility implements TargetableAbility {
 	}
 
 	@Override
-	public int manaCost() {
-		return 0;
-	}
-
-	@Override
 	public int staminaCost() {
-		return 0;
-	}
-
-	@Override
-	public int cooldownTime() {
-		return 0;
+		return 5;
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
+import com.Github.Malatak1.RPGPlus.Abilities.Dexterity.QuickShotAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.Dexterity.VolleyAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.Strength.WeakenAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.Wisdom.DeflectAbility;
@@ -56,6 +57,12 @@ public class MiscMenus {
 					p.closeInventory();
 					AbilitySelectMenus.createAbilityMenu(p).open(p);
 					break;
+				case 3:
+					db.setAbility(p, new QuickShotAbility());
+					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
+					p.closeInventory();
+					AbilitySelectMenus.createAbilityMenu(p).open(p);
+					break;
 				default: 
 					p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
 					p.closeInventory();
@@ -68,6 +75,7 @@ public class MiscMenus {
 		lightSelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
 		lightSelect.addAbility(1, new FireboltAbility());
 		lightSelect.addAbility(2, new WeakenAbility());
+		lightSelect.addAbility(3, new QuickShotAbility());
 		
 		mediumSelect = new IconMenu("Medium Ability", 36, new IconMenu.OptionClickEventHandler() {
 			

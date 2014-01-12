@@ -13,12 +13,14 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.CooldownAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.ManaAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Util.ProjectileEffect;
 import com.Github.Malatak1.RPGPlus.Util.ProjectileRemover;
 
-public class FireballAbility implements CastableAbility {
+public class FireballAbility implements CastableAbility, ManaAbility, CooldownAbility {
 
 	@Override
 	public String getName() {
@@ -49,15 +51,10 @@ public class FireballAbility implements CastableAbility {
 	public int manaCost() {
 		return 10;
 	}
-	
-	@Override
-	public int staminaCost() {
-		return 0;
-	}
 
 	@Override
 	public int cooldownTime() {
-		return 0;
+		return 40;
 	}
 	
 	@SuppressWarnings({ "deprecation", "unused" })
