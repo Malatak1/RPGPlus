@@ -1,5 +1,7 @@
 package com.Github.Malatak1.RPGPlus.Commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -10,6 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.DataTypes.LevelIncrements;
@@ -33,8 +37,6 @@ public class CommandHandler implements CommandExecutor {
 				LevelIncrements dexIncrements = new LevelIncrements(SkillType.DEXTERITY);
 				LevelIncrements wisIncrements = new LevelIncrements(SkillType.WISDOM);
 				LevelIncrements conIncrements = new LevelIncrements(SkillType.CONSTITUTION);
-				
-				
 				
 				String strength = ChatColor.YELLOW + "Strength: " + ChatColor.GREEN + f.getInt("Skills.Strength") + ChatColor.AQUA + " (" + ChatColor.GRAY + f.getInt("Exp.Strength") + ChatColor.AQUA + "/" + ChatColor.GRAY + strIncrements.getIncrement(f.getInt("Skills.Strength")) + ChatColor.AQUA + ")";
 				String dexterity = ChatColor.YELLOW + "Dexterity: " + ChatColor.GREEN + f.getInt("Skills.Dexterity") + ChatColor.AQUA + " (" + ChatColor.GRAY + f.getInt("Exp.Dexterity") + ChatColor.AQUA + "/" + ChatColor.GRAY + dexIncrements.getIncrement(f.getInt("Skills.Dexterity")) + ChatColor.AQUA + ")";
@@ -111,6 +113,33 @@ public class CommandHandler implements CommandExecutor {
 				}
 			
 			}
+		if(cmd.getName().equalsIgnoreCase("focus")) {
+			if (sender instanceof Player) {
+				Player p = (Player) sender;
+				if (p.isOp()) {
+					ItemStack item = p.getItemInHand();
+					ItemMeta meta = item.getItemMeta();
+					List<String> lore;
+					if (meta.hasLore()) {
+						lore = meta.getLore();
+					} else {
+						lore = new ArrayList<String>();
+					}
+					int value = 1;
+					if (args.length > 0) {
+						value = Integer.parseInt(args[0]);
+					}
+					lore.add(ChatColor.GRAY + "Focus " + getRoman(value));
+					meta.setLore(lore);
+					item.setItemMeta(meta);
+					p.setItemInHand(item);
+					p.sendMessage(ChatColor.YELLOW + "Enchantment added");
+					return true;
+				} else {
+					p.sendMessage("You lack permissions!");
+				}
+			}
+		}
 		return false;
 		}
 	
@@ -119,13 +148,29 @@ public class CommandHandler implements CommandExecutor {
 		Map<Player, FileConfiguration> mp = db.getFileMap();
 		mp.put(p, f);
 		db.setFileMap(mp);
-
+		
 	}
 	
 	private String capitalize(String s) {
 		char[] charArray = s.toLowerCase().toCharArray();
 		charArray[0] = Character.toUpperCase(charArray[0]);
 		return new String(charArray);
+	}
+	
+	private String getRoman(int number) {
+
+	    String roman[] = {"M","XM","CM","D","XD","CD","C","XC","L","XL","X","IX","V","IV","I"};
+	    int arab[] = {1000, 990, 900, 500, 490, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+	    StringBuilder result = new StringBuilder();
+	    int i = 0;
+	    while (number > 0 || arab.length == (i - 1)) {
+	        while ((number - arab[i]) >= 0) {
+	            number -= arab[i];
+	            result.append(roman[i]);
+	        }
+	        i++;
+	    }
+	    return result.toString();
 	}
 	
 }

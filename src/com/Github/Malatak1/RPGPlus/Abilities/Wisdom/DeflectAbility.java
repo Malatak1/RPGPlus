@@ -52,10 +52,16 @@ public class DeflectAbility implements CastableAbility, ManaAbility {
 	public void cast(Player p, int power) {
 		@SuppressWarnings("deprecation")
 		Vector to = p.getTargetBlock(transparent, 100).getLocation().toVector().zero();
+		int i = 0;
 		for (Entity e : p.getNearbyEntities(6 * power, 6 * power, 6 * power)) {
-			if (e instanceof Projectile) {
-				Vector from = e.getVelocity();
-				e.setVelocity(to.subtract(from).multiply(2));
+			if (i > 5) {
+				if (e instanceof Projectile) {
+					if (!((Projectile) e).isOnGround()) {
+						Vector from = e.getVelocity();
+						e.setVelocity(to.subtract(from).multiply(2));
+						i++;
+					}
+				}
 			}
 		}
 	}

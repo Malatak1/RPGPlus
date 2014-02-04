@@ -39,7 +39,7 @@ public class LevelIncrements {
 		for (int i = 0; i < type.getMax(); i++) {
 			
 			float a1 = 90;
-			float r = 1.1F;
+			float r = 1.15F;
 			
 			increments[i] = (int) Math.round(a1 * Math.pow(r, i - 1));
 		}

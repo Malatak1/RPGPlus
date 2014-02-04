@@ -56,7 +56,7 @@ public class FireboltAbility implements CastableAbility, ManaAbility, CooldownAb
 
 	@Override
 	public int cooldownTime() {
-		return 0;
+		return 20;
 	}
 	
 	@SuppressWarnings({ "deprecation", "unused" })

@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenu.OptionClickEvent;
+import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.PartyIconMenus.BasePartyMenu;
 
 public class IconMenuHandler{
 	
@@ -23,7 +24,7 @@ public class IconMenuHandler{
 		stMenus = new SkillTreeIconMenus();
 		misc = new MiscMenus();
 		
-		baseIconMenu = new IconMenu("Character Customization", 9, new IconMenu.OptionClickEventHandler() {
+		baseIconMenu = new IconMenu("Menu", 9, new IconMenu.OptionClickEventHandler() {
 			
 			@Override
 			public void onOptionClick(OptionClickEvent event) {
@@ -37,6 +38,7 @@ public class IconMenuHandler{
 				case 2: stMenus.getDexterityMenu().open(p); break;
 				case 3: stMenus.getWisdomMenu().open(p); break;
 				case 4: AbilitySelectMenus.createAbilityMenu(p).open(p); break;
+				case 8: new BasePartyMenu(p).open(p);
 				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
 				
 				}
@@ -48,6 +50,7 @@ public class IconMenuHandler{
 		baseIconMenu.setOption(2, new ItemStack(Material.BOW), pri + "Dexterity",sec + "Click to open " + ter + "dexterity" + sec + " skilltrees");
 		baseIconMenu.setOption(3, new ItemStack(Material.BOOK), pri + "Wisdom", sec + "Click to open " + ter + "wisdom" + sec + " skilltrees");
 		baseIconMenu.setOption(4, new ItemStack(Material.EMERALD), pri + "Abilities", sec + "Choose the " + ter + "abilities" + sec + " you want selected");
+		baseIconMenu.setOption(8, new ItemStack(Material.ENDER_PEARL), pri + "Parties", sec + "Create, join and manage parties");
 		
 		
 		stMenus.init();

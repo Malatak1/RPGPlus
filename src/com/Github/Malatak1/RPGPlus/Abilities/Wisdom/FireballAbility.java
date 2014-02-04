@@ -62,7 +62,7 @@ public class FireballAbility implements CastableAbility, ManaAbility, CooldownAb
 	public void cast(Player p, int power) {
 		Location loc = (Location) p.getEyeLocation().toVector().add(p.getLocation().getDirection().multiply(2)).toLocation(p.getWorld(), p.getLocation().getYaw(), p.getLocation().getPitch());
 		Fireball fireball = p.getWorld().spawn(loc, Fireball.class);
-		fireball.setYield(power + 2);
+		fireball.setYield((power + 2) / 2);
         
 		fireball.setShooter(p);
 		BukkitTask projectileEffect = new ProjectileEffect((Projectile) fireball, Type.BALL, Color.RED, 3).runTaskLater(RPGPlus.inst(), 4);

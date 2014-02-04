@@ -31,7 +31,7 @@ public class DataBaseManager {
 	RPGPlus rpgPlus = new RPGPlus();
 	static File fileDataBase;
 	public static Map<Player, FileConfiguration> playerFileConfigMap;
-	public static Map<Player,HashMap<AbilityType, Ability>> playerAbilityMap;
+	public static Map<Player, HashMap<AbilityType, Ability>> playerAbilityMap;
 	
 	Plugin plugin;
 	

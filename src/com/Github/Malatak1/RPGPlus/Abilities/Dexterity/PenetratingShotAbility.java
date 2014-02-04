@@ -1,40 +1,36 @@
 package com.Github.Malatak1.RPGPlus.Abilities.Dexterity;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
-import com.Github.Malatak1.RPGPlus.Abilities.CooldownAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.ProjectileAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.StaminaAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
-import com.Github.Malatak1.RPGPlus.Util.VolleyArrowRunnable;
 
-public class VolleyAbility implements ProjectileAbility, StaminaAbility, CooldownAbility {
+public class PenetratingShotAbility implements ProjectileAbility, StaminaAbility{
 
 	@Override
 	public String getName() {
-		return "Volley";
+		return "Penetrating Shot";
 	}
 
 	@Override
 	public String getInfo() {
-		return "Call in a volley with a flare arrow";
+		return "Deal increased damage against armored foes";
 	}
 
 	@Override
 	public ItemStack getIcon() {
-		return new ItemStack(Material.EYE_OF_ENDER);
+		return new ItemStack(Material.PUMPKIN_SEEDS);
 	}
 
 	@Override
 	public AbilityType getAbilityType() {
-		return AbilityType.ULTIMATE;
+		return AbilityType.MEDIUM;
 	}
 
 	@Override
@@ -48,15 +44,8 @@ public class VolleyAbility implements ProjectileAbility, StaminaAbility, Cooldow
 	}
 
 	@Override
-	public int cooldownTime() {
-		return 1600;
+	public void onShoot(Projectile projectile, int power) {
+		projectile.setMetadata("Penetrating", new FixedMetadataValue(RPGPlus.inst(), "True"));
 	}
 
-	@Override
-	public void onShoot(Projectile projectile, int power) {
-		@SuppressWarnings("unused")
-		BukkitTask volleyRunnable = new VolleyArrowRunnable((Player) projectile.getShooter(), (Arrow) projectile, power).runTaskLater(RPGPlus.inst(), 5);
-		
-	}
-	
 }

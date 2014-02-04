@@ -6,13 +6,13 @@ import java.io.InputStream;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.Github.Malatak1.RPGPlus.Commands.CommandHandler;
+import com.Github.Malatak1.RPGPlus.Commands.PartyCommand;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenuHandler;
-import com.Github.Malatak1.RPGPlus.Database.CooldownManager;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
 import com.Github.Malatak1.RPGPlus.Database.ExperienceHandler;
+import com.Github.Malatak1.RPGPlus.Database.LeaderboardManager;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDamageByEntityListener;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDamageListener;
 import com.Github.Malatak1.RPGPlus.Listeners.EntityDeathListener;
@@ -21,6 +21,7 @@ import com.Github.Malatak1.RPGPlus.Listeners.PlayerInteractListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerJoinListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerLevelUpListener;
 import com.Github.Malatak1.RPGPlus.Listeners.PlayerQuitListener;
+import com.Github.Malatak1.RPGPlus.Listeners.PotionSplashListener;
 
 public class RPGPlus extends JavaPlugin {
 	
@@ -28,13 +29,12 @@ public class RPGPlus extends JavaPlugin {
 	public static final IconMenuHandler iconMenuHandler = new IconMenuHandler();
 	public static final DataBaseManager dataBaseManager = new DataBaseManager(RPGPlus.inst());
 	public static final ExperienceHandler experienceHandler = new ExperienceHandler();
-	public static final CooldownManager cooldownManager = new CooldownManager();
 	
 	public static InputStream baseFile;
 	
 	private static RPGPlus instance;
 	
-    @Override
+	@Override
     public void onEnable(){
     	PluginManager pm = getServer().getPluginManager();
     	
@@ -44,6 +44,8 @@ public class RPGPlus extends JavaPlugin {
     	
     	//Setting Command Executors
     	getCommand("rpg").setExecutor(new CommandHandler());
+    	getCommand("focus").setExecutor(new CommandHandler());
+    	getCommand("party").setExecutor(new PartyCommand());
     	
     	//Registering Listeners
     	pm.registerEvents(new PlayerJoinListener(), this);
@@ -53,7 +55,9 @@ public class RPGPlus extends JavaPlugin {
     	pm.registerEvents(new EntityDamageByEntityListener(), this);
     	pm.registerEvents(new EntityDeathListener(), this);
     	pm.registerEvents(new EntityShootBowListener(), this);
+    	pm.registerEvents(new PotionSplashListener(), this);
     	pm.registerEvents(new PlayerLevelUpListener(), this);
+    	
     	//Setting up Database
     	saveDefaultConfig();
     	if (getDataFolder() == null) {
@@ -62,14 +66,14 @@ public class RPGPlus extends JavaPlugin {
     	}
     	getDataFolder().mkdirs();
         new DataBaseManager(this).prepareDataBase();
+        LeaderboardManager.init();
         
         //Preparing IconMenus
         iconMenuHandler.initIconMenus();
         
         //Start repeating tasks
-        @SuppressWarnings("unused")
-		BukkitTask task = new ManaRegenerator().runTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ManaRegenerator(), 50, 20);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ManaRegenerator(), 50, 50);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TitleRunnable(), 50, 50);
         
     }
  

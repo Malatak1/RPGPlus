@@ -24,8 +24,7 @@ public class AbilitySelectMenus {
 	
 	public static IconMenu createAbilityMenu(Player p) {
 		
-		abilitySelectMenu = new IconMenu("Ability Selection", 9,
-				new IconMenu.OptionClickEventHandler() {
+		abilitySelectMenu = new IconMenu("Ability Selection", 9, new IconMenu.OptionClickEventHandler() {
 
 					@Override
 					public void onOptionClick(OptionClickEvent event) {
@@ -49,9 +48,10 @@ public class AbilitySelectMenus {
 							p.closeInventory();
 							MiscMenus.inst().getUltimate().open(p);
 							break;
-
 						default:
 							p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
+							p.closeInventory();
+							abilitySelectMenu.open(p);
 						}
 						event.setWillClose(false);
 						event.setWillDestroy(true);

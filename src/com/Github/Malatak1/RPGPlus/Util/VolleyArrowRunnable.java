@@ -36,7 +36,7 @@ public class VolleyArrowRunnable extends BukkitRunnable {
 		spawnLoc.setY(spawnLoc.getY() + 20);
 		
 		final Vector direction = new Vector();
-		direction.setY(-1);
+		direction.setY(-0.5);
 		
 		Bukkit.getScheduler().scheduleSyncDelayedTask(RPGPlus.inst(), new Runnable() {
 			public void run() {
@@ -49,11 +49,11 @@ public class VolleyArrowRunnable extends BukkitRunnable {
 					effectLoc.setY(effectLoc.getY() + 8);
 					
 					final Location finalLoc = a.getLocation();
-					finalLoc.setY(finalLoc.getY() + 20);
+					finalLoc.setY(finalLoc.getY() + 30);
 					
 					final HashSet<Arrow> arrowList = new HashSet<>();
 					
-					for (int i = 0; i < (4 * power) + 8; i++) {
+					for (int i = 0; i < (4 * power) + 12; i++) {
 						Bukkit.getScheduler().scheduleSyncDelayedTask(RPGPlus.inst(), new Runnable() {
 							public void run() {
 								try {
@@ -61,13 +61,13 @@ public class VolleyArrowRunnable extends BukkitRunnable {
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
-								for (int j = 0; j < 8; j++) {
-				                    Arrow a = p.getWorld().spawnArrow(finalLoc, direction, 20, 12);
+								for (int j = 0; j < 30; j++) {
+				                    Arrow a = p.getWorld().spawnArrow(finalLoc, direction, 20, 20);
 				                    a.setShooter(p);
 				                    arrowList.add(a);
 								}
 							}
-						}, (i + 1) * 5);
+						}, (i + 3) * 5);
 					}
 					
 					Bukkit.getScheduler().scheduleSyncDelayedTask(RPGPlus.inst(), new Runnable() {
@@ -76,7 +76,7 @@ public class VolleyArrowRunnable extends BukkitRunnable {
 								a.remove();
 							}
 						}
-					}, 40 * (power + 1));
+					}, 80 * (power + 1));
 				}
 			}
 		}, 4);

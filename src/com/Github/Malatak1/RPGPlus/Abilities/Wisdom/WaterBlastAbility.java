@@ -1,21 +1,26 @@
 package com.Github.Malatak1.RPGPlus.Abilities.Wisdom;
 
 import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.BlockIterator;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.CooldownAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.ManaAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
-import com.Github.Malatak1.RPGPlus.Util.FireworkEffectPlayer;
+import com.Github.Malatak1.RPGPlus.Util.ProjectileEffect;
 
 public class WaterBlastAbility implements CastableAbility, ManaAbility, CooldownAbility {
 
@@ -26,17 +31,17 @@ public class WaterBlastAbility implements CastableAbility, ManaAbility, Cooldown
 
 	@Override
 	public String getInfo() {
-		return "Blast targets with a torrent of water";
+		return "A mid distance cone of water";
 	}
 
 	@Override
 	public ItemStack getIcon() {
-		return new ItemStack(Material.WATER_BUCKET);
+		return new ItemStack(Material.POTION);
 	}
 
 	@Override
 	public AbilityType getAbilityType() {
-		return AbilityType.HEAVY;
+		return AbilityType.LIGHT;
 	}
 
 	@Override
@@ -46,61 +51,31 @@ public class WaterBlastAbility implements CastableAbility, ManaAbility, Cooldown
 
 	@Override
 	public int manaCost() {
-		return 10;
+		return 8;
 	}
 
 	@Override
 	public int cooldownTime() {
-		return 0;
+		return 30;
 	}
 	
 	@Override
 	public void cast(Player p, int power) {
 		
-		FireworkEffectPlayer fplayer = new FireworkEffectPlayer();
-		Location start = p.getLocation();
-		@SuppressWarnings("deprecation")
-		Location newLocation = p.getTargetBlock(null, 50).getLocation();
+		Potion potion = new Potion(PotionType.SLOWNESS, 1).splash();
+		ItemStack itemStack = new ItemStack(Material.POTION);
+		potion.apply(itemStack);
 		
-		BlockIterator blocksToAdd = new BlockIterator(start.getWorld(), start.toVector(), new Vector(newLocation.getBlockX()-start.getBlockX(), newLocation.getBlockY()-start.getBlockY(), newLocation.getBlockZ()-start.getBlockZ()), 0, (int) Math.floor(start.distanceSquared(newLocation)));
-		Location location;
-		while(blocksToAdd.hasNext()) {
-		    location = blocksToAdd.next().getLocation();
-		    try {
-				fplayer.playFirework(p.getWorld(), location, FireworkEffect.builder().with(Type.BALL).withColor(Color.BLUE).build());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		    try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		Location loc = (Location) p.getEyeLocation().toVector().add(p.getLocation().getDirection().multiply(2)).toLocation(p.getWorld(), p.getLocation().getYaw(), p.getLocation().getPitch());
+		ThrownPotion splash = (ThrownPotion) p.getWorld().spawn(loc, ThrownPotion.class);
+		Vector vector = p.getLocation().getDirection().multiply(2);
+		splash.setVelocity(vector);
+		splash.setItem(itemStack);
+		splash.setMetadata("Element", new FixedMetadataValue(RPGPlus.inst(), "Water"));
+		splash.setShooter(p);
 		
-		
-//		FireworkEffectPlayer fplayer = new FireworkEffectPlayer();
-//		
-//		Location location;
-//		LocationIterator locationsToAdd = new LocationIterator(p);
-//		
-//		int i = 0;
-//		while(locationsToAdd.hasNext()) {
-//			if (i < 100) {
-//				location = locationsToAdd.next();
-//				try {
-//					fplayer.playFirework(p.getWorld(), location, FireworkEffect.builder().with(Type.BALL).withColor(Color.RED).build());
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//				i++;
-//			}
-//		}
-		
-		
-		
-		
+		@SuppressWarnings("unused")
+		BukkitTask projectileEffect = new ProjectileEffect((Projectile) splash, Type.BURST, Color.BLUE, 3).runTaskLater(RPGPlus.inst(), 3);
 	}
 
 }

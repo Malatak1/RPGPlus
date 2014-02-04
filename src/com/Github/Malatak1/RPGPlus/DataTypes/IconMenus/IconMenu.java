@@ -29,7 +29,8 @@ public class IconMenu implements Listener {
     
 	ChatColor pri = IconMenuHandler.pri;
 	ChatColor sec = IconMenuHandler.sec;
-    
+    ChatColor ter = IconMenuHandler.ter;
+	
     public IconMenu(String name, int size, OptionClickEventHandler handler, Plugin plugin) {
         this.name = name;
         this.size = size;
@@ -70,6 +71,7 @@ public class IconMenu implements Listener {
             event.setCancelled(true);
             int slot = event.getRawSlot();
             if (slot >= 0 && slot < size && optionNames[slot] != null) {
+                Bukkit.getLogger().info("Running");
                 Plugin plugin = this.plugin;
                 OptionClickEvent e = new OptionClickEvent((Player)event.getWhoClicked(), slot, optionNames[slot]);
                 handler.onOptionClick(e);
@@ -146,7 +148,11 @@ public class IconMenu implements Listener {
     
 	public void addAbility(int position, Ability ability) {
 		
-		setOption(position, ability.getIcon(), pri + ability.getName(), sec + ability.getInfo());
+		ChatColor ita = ChatColor.ITALIC;
+		String skillType = ability.getSkillType().toString().toLowerCase();
+		String desc = Character.toUpperCase(skillType.charAt(0)) + skillType.substring(1);
+		String[] info = {sec + ability.getInfo(), ter + "" + ita + desc};
+		setOption(position, ability.getIcon(), pri + ability.getName(), info);
 		
 	}
 }

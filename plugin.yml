@@ -6,3 +6,9 @@ commands:
   rpg:
     description: rpgplus base command
     usage: /<command>
+  focus:
+    description: adds focus enchantment
+    usage: /<command> [level]
+  party:
+    description: party base command
+    usage: /<command> (join/leave/create/invite/disband) [args]

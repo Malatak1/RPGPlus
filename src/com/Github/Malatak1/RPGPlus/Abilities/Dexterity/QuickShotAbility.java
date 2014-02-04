@@ -41,7 +41,7 @@ public class QuickShotAbility implements Ability, CooldownAbility, CastableAbili
 	
 	@Override
 	public int cooldownTime() {
-		return 100;
+		return 400;
 	}
 	
 	@Override

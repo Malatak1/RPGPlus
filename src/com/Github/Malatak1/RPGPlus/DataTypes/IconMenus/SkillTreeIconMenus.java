@@ -78,9 +78,9 @@ public class SkillTreeIconMenus {
 		return strengthIconMenu;
 	}
 	public IconMenu getDexterityMenu() {
-		return strengthIconMenu;
+		return dexterityIconMenu;
 	}
 	public IconMenu getWisdomMenu() {
-		return strengthIconMenu;
+		return wisdomIconMenu;
 	}
 }

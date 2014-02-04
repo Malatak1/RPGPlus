@@ -38,7 +38,7 @@ public class EntityDamageListener implements Listener {
 					giveXp = false;
 				}
 				
-				if (giveXp && health < maxHealth * 0.75 && damage > mod && damage < health) {
+				if (giveXp && health < maxHealth * 0.80 && damage > mod && damage < health) {
 					
 					double xp = damage / 2;
 					RPGPlus.experienceHandler.handleXp(p, SkillType.CONSTITUTION, (int) xp);

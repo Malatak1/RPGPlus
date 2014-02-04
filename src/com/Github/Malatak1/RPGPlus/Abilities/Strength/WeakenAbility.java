@@ -12,6 +12,7 @@ import com.Github.Malatak1.RPGPlus.Abilities.StaminaAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.TargetableAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
+import com.Github.Malatak1.RPGPlus.Party.PartyManager;
 
 public class WeakenAbility implements TargetableAbility, StaminaAbility {
 
@@ -47,8 +48,15 @@ public class WeakenAbility implements TargetableAbility, StaminaAbility {
 	
 	@Override
 	public void onTarget(LivingEntity target, Player damager, int power) {
-		target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 40 + (20 * power), 0, true), true);
-		damager.playEffect(target.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+		if (target instanceof Player) {
+			if (!PartyManager.inSameParty((Player) target, damager)) {
+				target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 40 + (20 * power), 0, true), true);
+				damager.playEffect(target.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+			}
+		} else {
+			target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 40 + (20 * power), 0, true), true);
+			damager.playEffect(target.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+		}
 	}
 
 }

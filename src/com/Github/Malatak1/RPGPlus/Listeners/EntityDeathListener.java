@@ -16,6 +16,7 @@ public class EntityDeathListener implements Listener{
 	
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
+		event.setDroppedExp(0);
 		
 		LivingEntity entity = event.getEntity();
 		

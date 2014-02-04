@@ -21,6 +21,7 @@ import com.Github.Malatak1.RPGPlus.Abilities.CooldownAbility;
 import com.Github.Malatak1.RPGPlus.Abilities.ManaAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
+import com.Github.Malatak1.RPGPlus.Party.PartyManager;
 import com.Github.Malatak1.RPGPlus.Util.BlockRemover;
 import com.Github.Malatak1.RPGPlus.Util.FireworkEffectPlayer;
 
@@ -68,8 +69,17 @@ public class FreezingWindsAbility implements CastableAbility, ManaAbility, Coold
 		List<Entity> nearby = p.getNearbyEntities(10 + 2 * power, 8, 10 + 2 * power);
 		blocks = new ArrayList<Block>();
 		FireworkEffectPlayer fplayer = new FireworkEffectPlayer();
+		
+		for (Entity e : nearby) {
+			if (e instanceof Player) {
+				if (PartyManager.inSameParty(p, (Player) e)) {
+					nearby.remove(e);
+				}
+			}
+		}
+		
 		for (int i = 0; i < nearby.size(); i++) {
-			if (nearby.get(i) instanceof Damageable) {
+			if (nearby.get(i) instanceof Damageable && !nearby.get(i).hasMetadata("NPC")) {
 				Damageable entity = (Damageable) nearby.get(i);
 				freezeEntity(entity);
 				if (power > 2) {
