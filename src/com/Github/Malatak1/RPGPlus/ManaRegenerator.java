@@ -1,7 +1,5 @@
 package com.Github.Malatak1.RPGPlus;
 
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class ManaRegenerator extends BukkitRunnable {
 	
@@ -21,9 +20,8 @@ public class ManaRegenerator extends BukkitRunnable {
 	
 	@Override
 	public void run() {
-		Map<Player,FileConfiguration> fileMap = db.getFileMap();
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			FileConfiguration f = fileMap.get(p);
+			FileConfiguration f = PlayerDataManager.getPlayerData(p).getFile();
 			int level = f.getInt("Skills.Wisdom");
 			
 			int maxMana = 50 + ((level - 1) * 5);

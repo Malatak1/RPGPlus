@@ -19,10 +19,10 @@ import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenuHandler;
 import com.Github.Malatak1.RPGPlus.Database.CooldownManager;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class PlayerInteractListener implements Listener {
 	
-	IconMenuHandler menus = new IconMenuHandler();
 	DataBaseManager db = new DataBaseManager(RPGPlus.inst());
 	CooldownManager cdm = new CooldownManager();
 	AbilityCastHandler ach = new AbilityCastHandler();
@@ -33,7 +33,7 @@ public class PlayerInteractListener implements Listener {
 		Player p = event.getPlayer();
 		
 		if (p.getItemInHand().getType().equals(Material.NETHER_STAR) && rightClicked(event)) {
-			menus.getBaseIconMenu().open(p);
+			IconMenuHandler.getBaseIconMenu().open(p);
 		}
 		
 		if (p.getItemInHand().getType().equals(Material.STICK)) {
@@ -69,7 +69,7 @@ public class PlayerInteractListener implements Listener {
 	}
 	
 	private Ability getCorrectAbility(Player p, boolean rightClicked, SkillType type) {
-		Map<AbilityType, Ability> playerMap = db.getAbilityMap(p);
+		Map<AbilityType, Ability> playerMap = PlayerDataManager.getPlayerData(p).getAbilityMap();
 		if (!p.isSneaking()) {
 			if (!rightClicked) {
 				if (hasAbilitySelected(p, AbilityType.LIGHT, type)) {
@@ -101,7 +101,7 @@ public class PlayerInteractListener implements Listener {
 	}
 	
 	private boolean hasAbilitySelected(Player p, AbilityType type, SkillType skill) {
-		Map<AbilityType, Ability> playerMap = db.getAbilityMap(p);
+		Map<AbilityType, Ability> playerMap = PlayerDataManager.getPlayerData(p).getAbilityMap();
 		if(playerMap.containsKey(type)) {
 			Ability ability = playerMap.get(type);
 			if (ability.getSkillType().equals(skill)) {

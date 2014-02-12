@@ -30,7 +30,7 @@ public class EntityDeathListener implements Listener{
 					
 					int xp = 1;
 					if (entity instanceof Monster) {
-						xp = 5;
+						xp = 7;
 					}
 					if (!p.getItemInHand().getType().equals(Material.STICK)) {
 						RPGPlus.experienceHandler.handleXp(p, SkillType.DEXTERITY, xp);

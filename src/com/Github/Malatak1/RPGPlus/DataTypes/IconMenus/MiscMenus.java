@@ -1,28 +1,22 @@
 package com.Github.Malatak1.RPGPlus.DataTypes.IconMenus;
 
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
-import com.Github.Malatak1.RPGPlus.Abilities.Dexterity.PenetratingShotAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Dexterity.QuickShotAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Dexterity.SmokeBombAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Dexterity.SwiftStepAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Dexterity.VolleyAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Strength.BloodRageAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Strength.ManaDrainAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Strength.WeakenAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Strength.WolfAspectAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Wisdom.DeflectAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Wisdom.FireballAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Wisdom.FireboltAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Wisdom.FreezingWindsAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Wisdom.ThunderboltAbility;
-import com.Github.Malatak1.RPGPlus.Abilities.Wisdom.WaterBlastAbility;
+import com.Github.Malatak1.RPGPlus.Abilities.Ability;
+import com.Github.Malatak1.RPGPlus.Abilities.SkillTreeHandler;
+import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
+import com.Github.Malatak1.RPGPlus.DataTypes.PlayerData;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenu.OptionClickEvent;
+import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenu.OptionClickEventHandler;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class MiscMenus {
 	
@@ -30,226 +24,122 @@ public class MiscMenus {
 	
 	private static MiscMenus instance;
 	
-	private IconMenu lightSelect;
-	private IconMenu mediumSelect;
-	private IconMenu heavySelect;
-	private IconMenu ultimateSelect;
-	
 	private static final ChatColor pri = IconMenuHandler.pri;
 	private static final ChatColor sec = IconMenuHandler.sec;
+	private static OptionClickEventHandler handler;
 	
 	public void init() {
-		
 		db = new DataBaseManager(RPGPlus.inst());
 		instance = this;
 		
-		lightSelect = new IconMenu("Light Ability", 36, new IconMenu.OptionClickEventHandler() {
+		handler = new IconMenu.OptionClickEventHandler() {
 			@Override
 			public void onOptionClick(OptionClickEvent event) {
 				Player p = event.getPlayer();
-				
-				switch (event.getPosition()) {
-				case 0: 
+				if (event.getPosition() == 0) {
 					p.closeInventory();
 					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 1:
-					db.setAbility(p, new FireboltAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
+				} else if (SkillTreeHandler.isAbilityName(event.getName())) {
+					if (setAbility(p, SkillTreeHandler.getAbility(event.getName()))) {
+						p.closeInventory();
+						AbilitySelectMenus.createAbilityMenu(p).open(p);
+					} else {
+						switch(event.getMenu().getName()) {
+						case "Light Ability": p.closeInventory(); light(p).open(p); break;
+						case "Medium Ability": p.closeInventory(); medium(p).open(p); break;
+						case "Heavy Ability": p.closeInventory(); heavy(p).open(p); break;
+						case "Ultimate Ability": p.closeInventory(); ultimate(p).open(p); break;
+							default:
+								p.closeInventory();
+								AbilitySelectMenus.createAbilityMenu(p).open(p);
+								break;
+						}
+					}
+				} else {
 					p.closeInventory();
 					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 2:
-					db.setAbility(p, new WaterBlastAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 3:
-					db.setAbility(p, new WeakenAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 4:
-					db.setAbility(p, new QuickShotAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 5:
-					db.setAbility(p, new SwiftStepAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				default: 
-					p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
 				}
 				event.setWillClose(false);
+				event.setWillDestroy(true);
 			}
-		}, RPGPlus.inst());
-		lightSelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
-		lightSelect.addAbility(1, new FireboltAbility());
-		lightSelect.addAbility(2, new WaterBlastAbility());
-		lightSelect.addAbility(3, new WeakenAbility());
-		lightSelect.addAbility(4, new QuickShotAbility());
-		lightSelect.addAbility(5, new SwiftStepAbility());
-		
-		mediumSelect = new IconMenu("Medium Ability", 36, new IconMenu.OptionClickEventHandler() {
-			
-			@Override
-			public void onOptionClick(OptionClickEvent event) {
-				Player p = event.getPlayer();
-				
-				switch (event.getPosition()) {
-				case 0: 
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 1:
-					db.setAbility(p, new FireballAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 2:
-					db.setAbility(p, new PenetratingShotAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 3:
-					db.setAbility(p, new BloodRageAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 4:
-					db.setAbility(p, new ThunderboltAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				default: 
-					p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				}
-				event.setWillClose(false);
-			}
-		}, RPGPlus.inst());
-		mediumSelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
-		mediumSelect.addAbility(1, new FireballAbility());
-		mediumSelect.addAbility(2, new PenetratingShotAbility());
-		mediumSelect.addAbility(3, new BloodRageAbility());
-		mediumSelect.addAbility(4, new ThunderboltAbility());
-		
-		heavySelect = new IconMenu("Heavy Ability", 36, new IconMenu.OptionClickEventHandler() {
-			
-			@Override
-			public void onOptionClick(OptionClickEvent event) {
-				Player p = event.getPlayer();
-				
-				switch (event.getPosition()) {
-				case 0: 
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 1:
-					db.setAbility(p, new DeflectAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 2:
-					db.setAbility(p, new ManaDrainAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 3:
-					db.setAbility(p, new SmokeBombAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				default: 
-					p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				}
-				event.setWillClose(false);
-			}
-		}, RPGPlus.inst());
-		heavySelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
-		heavySelect.addAbility(1, new DeflectAbility());
-		heavySelect.addAbility(2, new ManaDrainAbility());
-		heavySelect.addAbility(3, new SmokeBombAbility());
-		
-		ultimateSelect = new IconMenu("Ultimate Ability", 36, new IconMenu.OptionClickEventHandler() {
-			
-			@Override
-			public void onOptionClick(OptionClickEvent event) {
-				Player p = event.getPlayer();
-				
-				switch (event.getPosition()) {
-				case 0: 
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 1:
-					db.setAbility(p, new FreezingWindsAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 2:
-					db.setAbility(p, new VolleyAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				case 3:
-					db.setAbility(p, new WolfAspectAbility());
-					p.sendMessage(ChatColor.YELLOW + "You have selected " + event.getName());
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				default: 
-					p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
-					p.closeInventory();
-					AbilitySelectMenus.createAbilityMenu(p).open(p);
-					break;
-				}
-				event.setWillClose(false);
-			}
-		}, RPGPlus.inst());
-		ultimateSelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
-		ultimateSelect.addAbility(1, new FreezingWindsAbility());
-		ultimateSelect.addAbility(2, new VolleyAbility());
-		ultimateSelect.addAbility(3, new WolfAspectAbility());
+		};
 	}
 	
-	public IconMenu getLight() {
+	public IconMenu light(Player p) {
+		IconMenu lightSelect = new IconMenu("Light Ability", 36, handler, RPGPlus.inst());
+		lightSelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
+		int i = 1;
+		for (Ability ability : SkillTreeHandler.abilityList) {
+			if (ability.getAbilityType() == AbilityType.LIGHT) {
+				lightSelect.addAbility(i, ability, p);
+				i++;
+			}
+		}
 		return lightSelect;
 	}
-	public IconMenu getMedium() {
+	
+	public IconMenu medium(Player p) {
+		IconMenu mediumSelect = new IconMenu("Medium Ability", 36, handler, RPGPlus.inst());
+		mediumSelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
+		int i = 1;
+		for (Ability ability : SkillTreeHandler.abilityList) {
+			if (ability.getAbilityType() == AbilityType.MEDIUM) {
+				mediumSelect.addAbility(i, ability, p);
+				i++;
+			}
+		}
 		return mediumSelect;
 	}
-	public IconMenu getHeavy() {
+	
+	public IconMenu heavy(Player p) {
+		IconMenu heavySelect = new IconMenu("Heavy Ability", 36, handler, RPGPlus.inst());
+		heavySelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
+		int i = 1;
+		for (Ability ability : SkillTreeHandler.abilityList) {
+			if (ability.getAbilityType() == AbilityType.HEAVY) {
+				heavySelect.addAbility(i, ability, p);
+				i++;
+			}
+		}
 		return heavySelect;
 	}
-	public IconMenu getUltimate() {
+	
+	public IconMenu ultimate(Player p) {
+		IconMenu ultimateSelect = new IconMenu("Ultimate Ability", 36, handler, RPGPlus.inst());
+		ultimateSelect.setOption(0, new ItemStack(Material.WOOL, 1, (byte) 14), pri + "Exit", sec + "Return to Ability Selection");
+		int i = 1;
+		for (Ability ability : SkillTreeHandler.abilityList) {
+			if (ability.getAbilityType() == AbilityType.ULTIMATE) {
+				ultimateSelect.addAbility(i, ability, p);
+				i++;
+			}
+		}
 		return ultimateSelect;
 	}
 	
 	public static MiscMenus inst() {
 		return instance;
+	}
+	
+	private boolean setAbility(Player p, Ability ability) {
+		PlayerData playerData = PlayerDataManager.getPlayerData(p);
+		FileConfiguration f = playerData.getFile();
+		if (f.contains("Abilities." + capitalize(ability.getSkillType().toString()) + "." + DataBaseManager.abilityToName(ability))) {
+			Map<AbilityType, Ability> abilityMap = playerData.getAbilityMap();
+			abilityMap.put(ability.getAbilityType(), ability);
+			playerData.setAbilityMap(abilityMap);
+			PlayerDataManager.setPlayerData(p, playerData);
+			p.sendMessage(pri + "You have selected " + sec + ability.getName());
+			return true;
+		} else {
+			p.sendMessage(pri + "You have not unlocked " + sec + ability.getName() + pri + " yet.");
+			return false;
+		}
+	}
+	
+	private static String capitalize(String s) {
+		char[] charArray = s.toLowerCase().toCharArray();
+		charArray[0] = Character.toUpperCase(charArray[0]);
+		return new String(charArray);
 	}
 }

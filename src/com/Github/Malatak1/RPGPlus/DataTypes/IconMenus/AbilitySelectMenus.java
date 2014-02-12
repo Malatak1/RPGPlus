@@ -13,6 +13,7 @@ import com.Github.Malatak1.RPGPlus.Abilities.CastableAbility;
 import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenu.OptionClickEvent;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class AbilitySelectMenus {
 	
@@ -29,36 +30,34 @@ public class AbilitySelectMenus {
 					@Override
 					public void onOptionClick(OptionClickEvent event) {
 						Player p = event.getPlayer();
-						
 						switch (event.getPosition()) {
-
 						case 1:
 							p.closeInventory();
-							MiscMenus.inst().getLight().open(p);
+							MiscMenus.inst().light(p).open(p);
 							break;
 						case 2:
 							p.closeInventory();
-							MiscMenus.inst().getMedium().open(p);
+							MiscMenus.inst().medium(p).open(p);
 							break;
 						case 3:
 							p.closeInventory();
-							MiscMenus.inst().getHeavy().open(p);
+							MiscMenus.inst().heavy(p).open(p);
 							break;
 						case 4:
 							p.closeInventory();
-							MiscMenus.inst().getUltimate().open(p);
+							MiscMenus.inst().ultimate(p).open(p);
 							break;
 						default:
 							p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
 							p.closeInventory();
-							abilitySelectMenu.open(p);
+							createAbilityMenu(p).open(p);
 						}
 						event.setWillClose(false);
 						event.setWillDestroy(true);
 					}
 				}, RPGPlus.inst());
-		Map<AbilityType, Ability> abilityMap = db.getAbilityMap(p);
-		addSpecialOptions(abilityMap);
+		Map<AbilityType, Ability> abilityMap = PlayerDataManager.getPlayerData(p).getAbilityMap();
+		addSpecialOptions(abilityMap, p);
 		abilitySelectMenu.setOption(0, new ItemStack(Material.PAPER), pri + "Info", sec + "Use the menus to customize your character");
 		
 		return abilitySelectMenu;
@@ -72,7 +71,7 @@ public class AbilitySelectMenus {
 		return null;
 	}
 	
-	public static void addSpecialOptions(Map<AbilityType, Ability> abilityMap ) {
+	public static void addSpecialOptions(Map<AbilityType, Ability> abilityMap, Player p) {
 		
 		for (AbilityType type : AbilityType.values()) {
 			Ability ability = abilityMap.get(type);
@@ -88,7 +87,7 @@ public class AbilitySelectMenus {
 			}
 			
 			if (abilityMap.containsKey(type)) {
-				abilitySelectMenu.addAbility(pos, ability);
+				abilitySelectMenu.addAbility(pos, ability, p);
 			} else {
 				abilitySelectMenu.setOption(pos, new ItemStack(Material.EMPTY_MAP), pri + capitalize(type.toString()), sec + "No ability selected");
 			}

@@ -1,7 +1,5 @@
 package com.Github.Malatak1.RPGPlus.Database;
 
-import java.util.Map;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,6 +8,7 @@ import org.bukkit.event.Event;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.DataTypes.LevelIncrements;
+import com.Github.Malatak1.RPGPlus.DataTypes.PlayerData;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Events.PlayerLevelUpEvent;
 
@@ -30,9 +29,7 @@ public class ExperienceHandler {
 		this.value = value;
 		
 		increments = new LevelIncrements(type);
-		
-		Map<Player, FileConfiguration> mp = db.getFileMap();
-		FileConfiguration f = mp.get(p);
+		FileConfiguration f = PlayerDataManager.getPlayerData(p).getFile();
 		
 		switch (type) {
 		case STRENGTH: 
@@ -65,8 +62,7 @@ public class ExperienceHandler {
 	
 	private void handleExperience(Player p, SkillType type) {
 		
-		Map<Player, FileConfiguration> mp = db.getFileMap();
-		FileConfiguration f = mp.get(p);
+		FileConfiguration f = PlayerDataManager.getPlayerData(p).getFile();
 		
 		String skillName = null;
 		
@@ -105,9 +101,9 @@ public class ExperienceHandler {
 	
 	private void finalizeData(Player p, FileConfiguration f) {
 		
-		Map<Player, FileConfiguration> mp = db.getFileMap();
-		mp.put(p, f);
-		db.setFileMap(mp);
+		PlayerData stats = PlayerDataManager.getPlayerData(p);
+		stats.setFile(f);
+		PlayerDataManager.setPlayerData(p, stats);
 
 	}
 	

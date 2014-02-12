@@ -11,6 +11,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class TitleRunnable extends BukkitRunnable {
 
@@ -27,7 +28,7 @@ public class TitleRunnable extends BukkitRunnable {
 
 		for (Player online : Bukkit.getOnlinePlayers()) {
 			if (!online.hasMetadata("NPC")) {
-				FileConfiguration f = db.getFileMap().get(online);
+				FileConfiguration f = PlayerDataManager.getPlayerData(online).getFile();
 				int str = f.getInt("Skills.Strength");
 				int dex = f.getInt("Skills.Dexterity");
 				int wis = f.getInt("Skills.Wisdom");

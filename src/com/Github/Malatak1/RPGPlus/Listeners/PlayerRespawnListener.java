@@ -1,7 +1,5 @@
 package com.Github.Malatak1.RPGPlus.Listeners;
 
-import java.util.Map;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,6 +8,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class PlayerRespawnListener implements Listener {
 	
@@ -22,8 +21,7 @@ public class PlayerRespawnListener implements Listener {
 		Player p = event.getPlayer();
 		db = new DataBaseManager(RPGPlus.inst());
 		
-		Map<Player, FileConfiguration> mp = db.getFileMap();
-		f = mp.get(p);
+		f = PlayerDataManager.getPlayerData(p).getFile();
 		
 		int level = f.getInt("Skills.Constitution");
 		

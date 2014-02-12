@@ -1,7 +1,6 @@
 package com.Github.Malatak1.RPGPlus.Listeners;
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -13,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public final class PlayerJoinListener implements Listener {
 	
@@ -27,20 +27,14 @@ public final class PlayerJoinListener implements Listener {
 			db.createPlayerFile(p);
 		}
 		
-		Map<Player, FileConfiguration> mp = db.getFileMap();
+		PlayerDataManager.createPlayerData(p);
 		try {
-			mp.put(p, db.getPlayerStats(p));
+			PlayerDataManager.getPlayerData(p).setFile(db.getPlayerStats(p));
 		} catch (IOException | InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
-		db.setFileMap(mp);
 		
-		
-		/**
-		 * Temporary code - may change
-		 */
-		
-		FileConfiguration f = mp.get(p);
+		FileConfiguration f = PlayerDataManager.getPlayerData(p).getFile();
 		
 		float level = f.getInt("Skills.Constitution");
 		double increase = Math.round(level / 3);

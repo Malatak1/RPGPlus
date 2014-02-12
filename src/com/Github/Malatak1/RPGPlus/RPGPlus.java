@@ -7,8 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.Github.Malatak1.RPGPlus.Abilities.SkillTreeHandler;
 import com.Github.Malatak1.RPGPlus.Commands.CommandHandler;
-import com.Github.Malatak1.RPGPlus.Commands.PartyCommand;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenuHandler;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
 import com.Github.Malatak1.RPGPlus.Database.ExperienceHandler;
@@ -26,7 +26,6 @@ import com.Github.Malatak1.RPGPlus.Listeners.PotionSplashListener;
 public class RPGPlus extends JavaPlugin {
 	
 	//Global Variables
-	public static final IconMenuHandler iconMenuHandler = new IconMenuHandler();
 	public static final DataBaseManager dataBaseManager = new DataBaseManager(RPGPlus.inst());
 	public static final ExperienceHandler experienceHandler = new ExperienceHandler();
 	
@@ -45,7 +44,6 @@ public class RPGPlus extends JavaPlugin {
     	//Setting Command Executors
     	getCommand("rpg").setExecutor(new CommandHandler());
     	getCommand("focus").setExecutor(new CommandHandler());
-    	getCommand("party").setExecutor(new PartyCommand());
     	
     	//Registering Listeners
     	pm.registerEvents(new PlayerJoinListener(), this);
@@ -69,7 +67,8 @@ public class RPGPlus extends JavaPlugin {
         LeaderboardManager.init();
         
         //Preparing IconMenus
-        iconMenuHandler.initIconMenus();
+        SkillTreeHandler.initSkillTrees();
+        IconMenuHandler.initIconMenus();
         
         //Start repeating tasks
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ManaRegenerator(), 50, 50);

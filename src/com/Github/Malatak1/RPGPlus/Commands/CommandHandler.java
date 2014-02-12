@@ -2,7 +2,6 @@ package com.Github.Malatak1.RPGPlus.Commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,8 +16,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.DataTypes.LevelIncrements;
+import com.Github.Malatak1.RPGPlus.DataTypes.PlayerData;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 import com.Github.Malatak1.RPGPlus.Events.PlayerLevelUpEvent;
 
 public class CommandHandler implements CommandExecutor {
@@ -30,8 +31,7 @@ public class CommandHandler implements CommandExecutor {
 			if (sender instanceof Player) {
 				Player p = (Player) sender;
 				
-				Map<Player, FileConfiguration> mp = db.getFileMap();
-				FileConfiguration f = mp.get(p);
+				FileConfiguration f = PlayerDataManager.getPlayerData(p).getFile();
 				
 				LevelIncrements strIncrements = new LevelIncrements(SkillType.STRENGTH);
 				LevelIncrements dexIncrements = new LevelIncrements(SkillType.DEXTERITY);
@@ -145,9 +145,9 @@ public class CommandHandler implements CommandExecutor {
 	
 	private void finalizeData(Player p, FileConfiguration f) {
 		
-		Map<Player, FileConfiguration> mp = db.getFileMap();
-		mp.put(p, f);
-		db.setFileMap(mp);
+		PlayerData playerData = PlayerDataManager.getPlayerData(p);
+		playerData.setFile(f);
+		PlayerDataManager.setPlayerData(p, playerData);
 		
 	}
 	

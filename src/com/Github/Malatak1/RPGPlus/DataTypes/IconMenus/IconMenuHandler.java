@@ -7,19 +7,19 @@ import org.bukkit.inventory.ItemStack;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.IconMenu.OptionClickEvent;
-import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.PartyIconMenus.BasePartyMenu;
+import com.Github.Malatak1.RPGPlus.DataTypes.IconMenus.PartyIconMenus.BasePartyMenus;
 
 public class IconMenuHandler{
 	
 	private static IconMenu baseIconMenu;
-	private SkillTreeIconMenus stMenus;
-	private MiscMenus misc;
+	private static SkillTreeIconMenus stMenus;
+	private static MiscMenus misc;
 	
 	public static ChatColor pri = ChatColor.AQUA;
 	public static ChatColor sec = ChatColor.GREEN;
 	public static final ChatColor ter = ChatColor.YELLOW;;
 	
-	public void initIconMenus(){
+	public static void initIconMenus(){
 		
 		stMenus = new SkillTreeIconMenus();
 		misc = new MiscMenus();
@@ -34,11 +34,19 @@ public class IconMenuHandler{
 				event.setWillClose(false);
 				
 				switch (event.getPosition()) {
-				case 1: stMenus.getStrengthMenu().open(p); break;
-				case 2: stMenus.getDexterityMenu().open(p); break;
-				case 3: stMenus.getWisdomMenu().open(p); break;
+				case 1: stMenus.strength(p).open(p); break;
+				case 2: stMenus.dexterity(p).open(p); break;
+				case 3: stMenus.wisdom(p).open(p); break;
 				case 4: AbilitySelectMenus.createAbilityMenu(p).open(p); break;
-				case 8: new BasePartyMenu(p).open(p);
+				case 8: 
+					if (p.isOp()) {
+						p.closeInventory(); new BasePartyMenus().baseMenu(p).open(p);
+						p.sendMessage(ChatColor.YELLOW + "Parties are in development. Use for testing only");
+						break;
+					} else {
+						p.sendMessage(ChatColor.YELLOW + "Parties are in development. Check back later!");
+						break;
+					}
 				default: p.sendMessage(ChatColor.YELLOW + "That was not clickable!");
 				
 				}
@@ -57,7 +65,7 @@ public class IconMenuHandler{
 		misc.init();
 	}
 	
-	public IconMenu getBaseIconMenu(){
+	public static IconMenu getBaseIconMenu(){
 		
 		if(baseIconMenu == null) initIconMenus();
 		return baseIconMenu;

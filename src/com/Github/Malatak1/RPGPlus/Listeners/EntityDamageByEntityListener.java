@@ -27,6 +27,7 @@ import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Database.CooldownManager;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 import com.Github.Malatak1.RPGPlus.Party.PartyManager;
 
 public class EntityDamageByEntityListener implements Listener {
@@ -43,8 +44,7 @@ public class EntityDamageByEntityListener implements Listener {
 				Player damager = (Player) event.getDamager();
 				db = new DataBaseManager(RPGPlus.inst());
 
-				Map<Player, FileConfiguration> mp = db.getFileMap();
-				f = mp.get(damager);
+				f = PlayerDataManager.getPlayerData(damager).getFile();
 
 				int strength = f.getInt("Skills.Strength");
 				
@@ -81,8 +81,7 @@ public class EntityDamageByEntityListener implements Listener {
 					if (!damager.getItemInHand().getType().equals(Material.STICK)) {
 						db = new DataBaseManager(RPGPlus.inst());
 
-						Map<Player, FileConfiguration> mp = db.getFileMap();
-						f = mp.get(damager);
+						f = PlayerDataManager.getPlayerData(damager).getFile();
 						
 						int dexterity = f.getInt("Skills.Dexterity");
 						
@@ -112,26 +111,26 @@ public class EntityDamageByEntityListener implements Listener {
 							int armorValue = armorEvaluator(equipment);
 							double damage = event.getDamage();
 							if (armorValue > 2)
+								entity.getWorld().playSound(entity.getLocation(), Sound.ANVIL_LAND, 1, 0);
 								damage++;
 							if (armorValue > 4)
 								damage++;
 							if (armorValue > 6)
 								damage++;
 							event.setDamage(damage);
-							entity.getWorld().playSound(entity.getLocation(), Sound.ANVIL_LAND, 1, 0);
 						} else if (entity instanceof Player) {
 							Player p = (Player) entity;
 							ItemStack[] equipment = p.getInventory().getArmorContents();
 							int armorValue = armorEvaluator(equipment);
 							double damage = event.getDamage();
 							if (armorValue > 2)
+								entity.getWorld().playSound(entity.getLocation(), Sound.ANVIL_LAND, 1, 0);
 								damage++;
 							if (armorValue > 4)
 								damage++;
 							if (armorValue > 6)
 								damage++;
 							event.setDamage(damage);
-							entity.getWorld().playSound(entity.getLocation(), Sound.ANVIL_LAND, 1, 0);
 						}
 					}
 				}
@@ -181,7 +180,7 @@ public class EntityDamageByEntityListener implements Listener {
 	
 	private boolean hasAbilitySelected(Player p, AbilityType type, SkillType skill) {
 		
-		Map<AbilityType, Ability> playerMap = db.getAbilityMap(p);
+		Map<AbilityType, Ability> playerMap = PlayerDataManager.getPlayerData(p).getAbilityMap();
 		if(playerMap.containsKey(type)) {
 			Ability ability = playerMap.get(type);
 			if (ability.getSkillType().equals(skill)) {
@@ -192,7 +191,7 @@ public class EntityDamageByEntityListener implements Listener {
 	}
 	
 	private Ability getCorrectAbility(Player p, boolean rightClicked, SkillType type) {
-		Map<AbilityType, Ability> playerMap = db.getAbilityMap(p);
+		Map<AbilityType, Ability> playerMap = PlayerDataManager.getPlayerData(p).getAbilityMap();
 		if (!p.isSneaking()) {
 			if (!rightClicked) {
 				if (hasAbilitySelected(p, AbilityType.LIGHT, type)) {

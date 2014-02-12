@@ -10,7 +10,6 @@ import com.Github.Malatak1.RPGPlus.RPGPlus;
 
 public class Party {
 	private final HashSet<String> members = new HashSet<String>();
-	private final HashSet<String> invites = new HashSet<String>();
 	private String leader;
 	
 	public Party(String leader) {
@@ -63,29 +62,5 @@ public class Party {
 	
 	public boolean hasPlayer(String p) {
 		return members.contains(p);
-	}
-	
-	public boolean containsInvite(Player p) {
-		return containsInvite(p.getName());
-	}
-	
-	public boolean containsInvite(String p) {
-		return invites.contains(p);
-	}
-	
-	public void addInvite(Player p) {
-		addInvite(p.getName());
-	}
-	
-	public void addInvite(String p) {
-		invites.add(p);
-	}
-	
-	public void removeInvite(Player p) {
-		removeInvite(p.getName());
-	}
-	
-	public void removeInvite(String p) {
-		invites.remove(p);
 	}
 }

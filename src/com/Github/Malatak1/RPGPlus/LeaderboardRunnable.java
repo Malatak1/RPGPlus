@@ -3,7 +3,6 @@ package com.Github.Malatak1.RPGPlus;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -17,6 +16,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
 import com.Github.Malatak1.RPGPlus.Database.LeaderboardManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class LeaderboardRunnable implements Runnable {
 	
@@ -26,7 +26,6 @@ public class LeaderboardRunnable implements Runnable {
 	public void run() {
 		db = new DataBaseManager(RPGPlus.inst());
 		HashSet<FileConfiguration> configs = new HashSet<>();
-		
 		
 		String[] pathList = db.getDataFolder().list();
 		for (String s : pathList) {
@@ -43,8 +42,7 @@ public class LeaderboardRunnable implements Runnable {
 		}
 		
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-			Map<Player, FileConfiguration> fileMap = db.getFileMap();
-			FileConfiguration playerFile = fileMap.get(p);
+			FileConfiguration playerFile = PlayerDataManager.getPlayerData(p).getFile();
 			configs.add(playerFile);
 		}
 		

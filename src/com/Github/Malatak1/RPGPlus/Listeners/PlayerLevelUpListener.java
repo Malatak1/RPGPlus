@@ -1,15 +1,15 @@
 package com.Github.Malatak1.RPGPlus.Listeners;
 
-import java.util.Map;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
+import com.Github.Malatak1.RPGPlus.DataTypes.PlayerData;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 import com.Github.Malatak1.RPGPlus.Events.PlayerLevelUpEvent;
 
 public class PlayerLevelUpListener implements Listener {
@@ -26,12 +26,12 @@ public class PlayerLevelUpListener implements Listener {
 		int level = event.getNewLevel();
 		String s = capitalize(type.toString());
 		
-		Map<Player, FileConfiguration> playerMap = db.getFileMap();
-		FileConfiguration playerStats = playerMap.get(p);
+		PlayerData playerData = PlayerDataManager.getPlayerData(p);
+		FileConfiguration playerStats = playerData.getFile();
 		int skillPoints = playerStats.getInt("SkillPoints." + s);
 		playerStats.set("SkillPoints." + s, skillPoints + 1);
-		playerMap.put(p, playerStats);
-		db.setFileMap(playerMap);
+		playerData.setFile(playerStats);
+		PlayerDataManager.setPlayerData(p, playerData);
 		
 		if (type.equals(SkillType.CONSTITUTION)) {
 			

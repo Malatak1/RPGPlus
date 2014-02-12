@@ -7,6 +7,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.Github.Malatak1.RPGPlus.DataTypes.Party;
+import com.Github.Malatak1.RPGPlus.DataTypes.PlayerData;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class PartyManager {
 	
@@ -19,9 +21,11 @@ public class PartyManager {
 			return true;
 	}
 	
-	public static void joinParty(Player p, String partyName) {
-		if (getPlayersParty(p) == null && getParty(partyName) != null) {
-			getParty(partyName).addPlayer(p);
+	public static void joinParty(Player p, String partyLeader) {
+		if (getPlayersParty(p) == null && getParty(partyLeader) != null) {
+			getParty(partyLeader).addPlayer(p);
+			PlayerDataManager.getPlayerData(p).setParty(getParty(partyLeader));
+			PlayerDataManager.getPlayerData(p).getInvites().remove(getParty(partyLeader));
 		}
 	}
 	
@@ -29,11 +33,15 @@ public class PartyManager {
 		if (getPlayersParty(p) != null) {
 			getPlayersParty(p).removePlayer(p);
 		}
+		PlayerData playerData = PlayerDataManager.getPlayerData(p);
+		playerData.setParty(null);
+		PlayerDataManager.setPlayerData(p, playerData);
 	}
 	
 	public static void disbandParty(Party party) {
 		for (Player player : party.getOnlineMembers()) {
 			party.removePlayer(player);
+			PlayerDataManager.getPlayerData(player).setParty(null);
 			player.sendMessage(ChatColor.GREEN + "Your party has been disbanded.");
 		}
 		parties.remove(party);

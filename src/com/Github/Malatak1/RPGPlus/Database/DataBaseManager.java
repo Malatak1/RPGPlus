@@ -3,11 +3,11 @@ package com.Github.Malatak1.RPGPlus.Database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,7 +16,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.Github.Malatak1.RPGPlus.RPGPlus;
 import com.Github.Malatak1.RPGPlus.Abilities.Ability;
-import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
+import com.Github.Malatak1.RPGPlus.DataTypes.PlayerData;
 import com.Github.Malatak1.RPGPlus.Util.FileSaver;
 import com.Github.Malatak1.RPGPlus.Util.StreamHandler;
 
@@ -30,8 +30,6 @@ public class DataBaseManager {
 	String folderName = "PlayerData";
 	RPGPlus rpgPlus = new RPGPlus();
 	static File fileDataBase;
-	public static Map<Player, FileConfiguration> playerFileConfigMap;
-	public static Map<Player, HashMap<AbilityType, Ability>> playerAbilityMap;
 	
 	Plugin plugin;
 	
@@ -77,13 +75,14 @@ public class DataBaseManager {
 		
 		path.append(folderName + File.separator);
 		fileDataBase = new File(path.toString());
-		playerFileConfigMap = new HashMap<Player, FileConfiguration>();
-		playerAbilityMap = new HashMap<Player, HashMap<AbilityType, Ability>>();
 	}
 	
 	public void closeDataBase() {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			PlayerDataManager.getPlayerData(player);
+		}
 		try {
-			savePlayerFiles(playerFileConfigMap);
+			savePlayerFiles(PlayerDataManager.getPlayerDataMap());
 		} catch (InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -130,16 +129,16 @@ public class DataBaseManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		new StreamHandler(RPGPlus.getBaseFile(), file).run();
+		new StreamHandler().run(file);
 	}
 	
-	public void savePlayerFiles(Map<Player, FileConfiguration> mp) throws InvalidConfigurationException {
-	    Iterator<Entry<Player, FileConfiguration>> it = mp.entrySet().iterator();
+	public void savePlayerFiles(Map<String, PlayerData> mp) throws InvalidConfigurationException {
+	    Iterator<Entry<String, PlayerData>> it = mp.entrySet().iterator();
 	    while (it.hasNext()) {
-	        Map.Entry<Player, FileConfiguration> pairs = (Map.Entry<Player, FileConfiguration>)it.next();
-        	FileConfiguration f = pairs.getValue();
+	        Map.Entry<String, PlayerData> pairs = (Map.Entry<String, PlayerData>)it.next();
+        	FileConfiguration f = pairs.getValue().getFile();
 	        try {
-				f.save(getPlayerFile(pairs.getKey()));
+				f.save(getPlayerFile(Bukkit.getPlayer(pairs.getKey())));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -149,38 +148,27 @@ public class DataBaseManager {
 	
 	public void savePlayer(Player p) throws FileNotFoundException, IOException, InvalidConfigurationException {
 		
-		FileConfiguration f = playerFileConfigMap.get(p);
+		PlayerData data = PlayerDataManager.getPlayerData(p);
+		FileConfiguration f = data.getFile();
 		
 		FileSaver fileSaver = new FileSaver(f, p);
 		new Thread(fileSaver).start();
 		
-		playerFileConfigMap.remove(p);
+		PlayerDataManager.removePlayerData(p);
 		
 	}
 	
-	public Map<Player, FileConfiguration> getFileMap() {
-		return playerFileConfigMap;
-	}
-	
-	public void setFileMap(Map<Player, FileConfiguration> mp) {
-		playerFileConfigMap = mp;
-	}
-	
-	public Map<AbilityType, Ability> getAbilityMap(Player p) {
-		
-		if(!playerAbilityMap.containsKey(p)) {
-			playerAbilityMap.put(p, new HashMap<AbilityType, Ability>());
+	public static String abilityToName(String name) {
+		String s = name.toLowerCase().replaceAll(" ", "_");
+		if (s.startsWith("§")) {
+			return s.substring(2);
+		} else {
+			return s;
 		}
-		return playerAbilityMap.get(p);
-		
 	}
 	
-	public void setAbility(Player p, Ability ability) {
-		
-		Map<AbilityType , Ability> playerMap = getAbilityMap(p);
-		playerMap.put(ability.getAbilityType(), ability);
-		
-		playerAbilityMap.put(p, (HashMap<AbilityType, Ability>) playerMap);
-		
+	public static String abilityToName(Ability ability) {
+		return abilityToName(ability.getName());
 	}
+	
 }

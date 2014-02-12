@@ -17,6 +17,7 @@ import com.Github.Malatak1.RPGPlus.DataTypes.AbilityType;
 import com.Github.Malatak1.RPGPlus.DataTypes.SkillType;
 import com.Github.Malatak1.RPGPlus.Database.CooldownManager;
 import com.Github.Malatak1.RPGPlus.Database.DataBaseManager;
+import com.Github.Malatak1.RPGPlus.Database.PlayerDataManager;
 
 public class EntityShootBowListener implements Listener {
 	
@@ -40,7 +41,7 @@ public class EntityShootBowListener implements Listener {
 	}
 	
 	private Ability getCorrectAbility(Player p, boolean rightClicked, SkillType type) {
-		Map<AbilityType, Ability> playerMap = db.getAbilityMap(p);
+		Map<AbilityType, Ability> playerMap = PlayerDataManager.getPlayerData(p).getAbilityMap();
 		if (!p.isSneaking()) {
 			if (!rightClicked) {
 				Bukkit.getLogger().info("Light");
@@ -68,7 +69,7 @@ public class EntityShootBowListener implements Listener {
 	}
 	
 	private boolean hasAbilitySelected(Player p, AbilityType type, SkillType skill) {
-		Map<AbilityType, Ability> playerMap = db.getAbilityMap(p);
+		Map<AbilityType, Ability> playerMap = PlayerDataManager.getPlayerData(p).getAbilityMap();
 		if(playerMap.containsKey(type)) {
 			Ability ability = playerMap.get(type);
 			if (ability.getSkillType().equals(skill)) {
